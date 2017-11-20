@@ -1,14 +1,3 @@
-$(window).on('hashchange', function () {
-    if (window.location.hash) {
-        var page = window.location.hash.replace('#', '');
-        if (page === Number.NaN || page <= 0) {
-            return false;
-        } else {
-            getData(page);
-        }
-    }
-});
-
 function getData(page) {
     showLoading();
     $.ajax({
@@ -17,7 +6,7 @@ function getData(page) {
         datatype: "html"
     }).done(function (data) {
         $("#item-lists").empty().html(data);
-        location.hash = page;
+        history.pushState({}, null, '?page=' + page);
         hideLoading();
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
         alert('No response from server');
@@ -61,8 +50,7 @@ $(document).ready(function () {
                 original_url: original_url
             },
             success: function (data) {
-                console.log(111);
-                hideLoading();
+                getData('1');
             }
         });
     });
@@ -71,10 +59,7 @@ $(document).ready(function () {
         $('li').removeClass('active');
         $(this).parent('li').addClass('active');
         event.preventDefault();
-
-        var myurl = $(this).attr('href');
         var page = $(this).attr('href').split('page=')[1];
-
         getData(page);
     });
 });
