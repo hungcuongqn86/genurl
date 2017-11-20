@@ -30,7 +30,7 @@ class HomeController extends Controller
         if ($request->ajax()) {
             return view('data', compact('urls'));
         }
-        return view('home',compact('urls'));
+        return view('home', compact('urls'));
     }
 
     public function shortener(Request $request)
@@ -47,7 +47,12 @@ class HomeController extends Controller
 
             $validator = Validator::make($input, $arrRules, $arrMessages);
             if ($validator->fails()) {
-                return response()->error($validator->errors()->all(), 200);
+                return response()->error($validator->errors()->all(), 400);
+            }
+
+            $uri = self::genUri();
+            if ($uri==='') {
+                return response()->error('NOT_CREATE_URI', 400);
             }
 
             $url = new Url;
@@ -68,12 +73,17 @@ class HomeController extends Controller
         }
     }
 
-    private function genUri($length = 6)
+    private function genUri($length = 6, $rec = 0)
     {
         $uri = str_random($length);
-        /*$existing = Offer::whereIn('coupon', $coupons)->count();
-        if ($existing > 0)
-            $coupons += $this->genUri($existing, $length);*/
+        $existing = Url::where('uri', '=', $uri)->where('status', '=', 1)->count();
+        if ($existing > 0){
+            if($rec < 10){
+                $uri = $this->genUri($length, $rec + 1);
+            }else{
+                $uri = '';
+            }
+        }
         return $uri;
     }
 }

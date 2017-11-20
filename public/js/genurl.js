@@ -51,6 +51,10 @@ $(document).ready(function () {
             },
             success: function (data) {
                 getData('1');
+            },
+            error: function (error) {
+                alert(error.responseJSON.message);
+                hideLoading();
             }
         });
     });
