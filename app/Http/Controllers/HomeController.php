@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Url;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -24,7 +26,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $urls = Url::paginate(5);
+        $urls = Url::orderBy('created_at', 'desc')->paginate(5);
         if ($request->ajax()) {
             return view('data', compact('urls'));
         }
@@ -33,12 +35,37 @@ class HomeController extends Controller
 
     public function shortener(Request $request)
     {
-        $url = new Url;
-        $url->original = $request->original_url;
-        $url->status = 1;
-        $url->uri = self::genUri();
-        $url->save();
-        exit;
+        $input = $request->all();
+        DB::beginTransaction();
+        try {
+            $arrRules = [
+                'original_url' => 'required'
+            ];
+            $arrMessages = [
+                'original_url.required' => 'ERRORS_MS.BAD_REQUEST',
+            ];
+
+            $validator = Validator::make($input, $arrRules, $arrMessages);
+            if ($validator->fails()) {
+                return response()->error($validator->errors()->all(), 200);
+            }
+
+            $url = new Url;
+            $url->original = $input['original_url'];
+            $url->status = 1;
+            $url->uri = self::genUri();
+            $url->save();
+            DB::commit();
+            return response()->success([]);
+        } catch (\PDOException $e) {
+            DB::rollBack();
+            throw $e;
+            return response()->error(trans('messages.MSG_PDO_Error'), 400);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+            return response()->error(trans('messages.MSG_Error'), 400);
+        }
     }
 
     private function genUri($length = 6)

@@ -10,6 +10,7 @@ $(window).on('hashchange', function () {
 });
 
 function getData(page) {
+    showLoading();
     $.ajax({
         url: '?page=' + page,
         type: "get",
@@ -17,14 +18,24 @@ function getData(page) {
     }).done(function (data) {
         $("#item-lists").empty().html(data);
         location.hash = page;
+        hideLoading();
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
         alert('No response from server');
+        hideLoading();
     });
 }
 
 function ValidURL(str) {
     var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
     return regex.test(str);
+}
+
+function showLoading() {
+    $('#overlay').show();
+}
+
+function hideLoading() {
+    $('#overlay').hide();
 }
 
 $(document).ready(function () {
@@ -41,6 +52,7 @@ $(document).ready(function () {
         }
         $('#div-alert').hide();
         var original_url = decodeURIComponent($('#original_url').val());
+        showLoading();
         $.ajax({
             url: '/shortener',
             type: "POST",
@@ -49,7 +61,8 @@ $(document).ready(function () {
                 original_url: original_url
             },
             success: function (data) {
-                console.log(data);
+                console.log(111);
+                hideLoading();
             }
         });
     });

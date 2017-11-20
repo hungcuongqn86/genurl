@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><strong>Simplify your links</strong></div>
+                    <div class="panel-heading"><h2>Simplify your links</h2></div>
 
                     <div class="panel-body">
                         <form>
@@ -23,8 +23,6 @@
                                 </div>
                             </div>
                         </form>
-
-                        <h2>Items Data</h2>
                         <div id="item-lists">
                             @include('data')
                         </div>

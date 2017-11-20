@@ -12,8 +12,12 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/genurl.css') }}" rel="stylesheet">
 </head>
 <body>
+    <div id="overlay" style="display: none;">
+        <div id="loader"></div>
+    </div>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
