@@ -29,3 +29,15 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.h1, h1 {
+    font-size: 30px;
+}
+
+.form-control {
+    box-shadow: none;
+}
+
+.table {
+    margin-bottom: 0;
+}

@@ -10,13 +10,14 @@
     <tbody>
     @foreach ($urls as $item)
         <tr>
-            <td>{{ $item->original }}</td>
-            <td>{{url('/')}}/{{ $item->uri }}</td>
+            <td><a href="{{ $item->original }}">{{ $item->original }}</a></td>
+            <td><a href="{{url('/')}}/{{ $item->uri }}">{{url('/')}}/{{ $item->uri }}</a></td>
             <td>{{ $item->created_at }}</td>
             <td>{{ $item->status }}</td>
         </tr>
     @endforeach
     </tbody>
 </table>
-
-{!! $urls->render() !!}
+<div class="pull-right">
+    {!! $urls->render() !!}
+</div>

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h2>Simplify your links</h2></div>
+                    <div class="panel-heading"><h1>Simplify your links</h1></div>
 
                     <div class="panel-body">
                         <form>

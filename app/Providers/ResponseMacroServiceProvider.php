@@ -32,6 +32,11 @@ class ResponseMacroServiceProvider extends ServiceProvider {
 				'redirect' => config('const.TIMEOUT_REDIRECT_URL'),
 			], $status);
 		});
+
+        Response::macro('redirect', function ($location) {
+            return response('',301)
+                ->header('location', $location);
+        });
 	}
 
 	/**
