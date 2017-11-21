@@ -53,7 +53,11 @@ $(document).ready(function () {
                 getData('1');
             },
             error: function (error) {
-                alert(error.responseJSON.message);
+                if(error.responseJSON && error.responseJSON.message){
+                    alert(error.responseJSON.message);
+                }else{
+                    alert(error.statusText);
+                }
                 hideLoading();
             }
         });
