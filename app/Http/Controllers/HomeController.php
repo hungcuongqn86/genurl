@@ -91,30 +91,11 @@ class HomeController extends Controller
     {
         $url = Url::where('uri', '=', $uri)->first();
         if ($url) {
-            $publicIP = $this->get_client_ip();
-            $json = file_get_contents("https://freegeoip.net/json/$publicIP");
-            $json = json_decode($json, true);
+            $ip= \Request::ip();
+            $data = \Location::get('172.217.25.14');
+            dd($data);
             dd($url);
             return response()->redirect($url->original);
         }
-    }
-
-    private function get_client_ip()
-    {
-        if (isset($_SERVER['HTTP_CLIENT_IP']))
-            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-        else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        else if (isset($_SERVER['HTTP_X_FORWARDED']))
-            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-        else if (isset($_SERVER['HTTP_FORWARDED_FOR']))
-            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-        else if (isset($_SERVER['HTTP_FORWARDED']))
-            $ipaddress = $_SERVER['HTTP_FORWARDED'];
-        else if (isset($_SERVER['REMOTE_ADDR']))
-            $ipaddress = $_SERVER['REMOTE_ADDR'];
-        else
-            $ipaddress = 'UNKNOWN';
-        return $ipaddress;
     }
 }
