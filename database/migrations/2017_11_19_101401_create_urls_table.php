@@ -17,9 +17,9 @@ class CreateUrlsTable extends Migration
         Schema::dropIfExists('urls');
         Schema::create('urls', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uri',20);
-            $table->string('original',4000);
-            $table->tinyInteger('status');
+            $table->string('uri',20)->nullable();
+            $table->string('original',4000)->nullable();
+            $table->tinyInteger('status')->nullable();
             $table->timestamps();
         });
     }

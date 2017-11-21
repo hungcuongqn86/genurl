@@ -17,8 +17,14 @@ class CreateUrlsLogTable extends Migration
         Schema::dropIfExists('url_log');
         Schema::create('url_log', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('url_id');
-            $table->text('data');
+            $table->integer('url_id')->nullable();
+            $table->string('ip',60)->nullable();
+            $table->string('countryCode',60)->nullable();
+            $table->string('referer',200)->nullable();
+            $table->smallInteger('device_type')->nullable();
+            $table->string('device_name',50)->nullable();
+            $table->string('browser',50)->nullable();
+            $table->string('platform',50)->nullable();
             $table->timestamps();
         });
     }
