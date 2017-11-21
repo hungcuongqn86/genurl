@@ -34,12 +34,55 @@ $(document).ready(function () {
         }
     });
 
+    $('#create-new').click(function () {
+        $(".val-alert").hide();
+        $('#uri').val('');
+        $('#original_url').val('');
+        $('#myModal').modal('show');
+        $('#myModal').on('shown', function() {
+            $("#uri").focus();
+        })
+    });
+
+    $('#automatically').click(function () {
+        showLoading();
+        $.ajax({
+            url: '/auto-uri',
+            type: "GET",
+            success: function (data) {
+                if(!data.error){
+                    $('#uri').val(data.data);
+                }else{
+                    alert(data.message);
+                }
+                hideLoading();
+            },
+            error: function (error) {
+                if(error.responseJSON && error.responseJSON.message){
+                    alert(error.responseJSON.message);
+                }else{
+                    alert(error.statusText);
+                }
+                hideLoading();
+            }
+        });
+    });
+
     $('#shorten').click(function () {
-        if (!ValidURL($('#original_url').val())) {
-            $('#div-alert').show();
+        if (!$('#uri').val()) {
+            $('#uri_alert').show();
+            $('#uri').focus();
             return false;
         }
-        $('#div-alert').hide();
+        $('#uri_alert').hide();
+
+        if (!ValidURL($('#original_url').val())) {
+            $('#original_url_alert').show();
+            $('#original_url').focus();
+            return false;
+        }
+        $('#original_url_alert').hide();
+
         var original_url = decodeURIComponent($('#original_url').val());
         showLoading();
         $.ajax({
@@ -47,12 +90,15 @@ $(document).ready(function () {
             type: "POST",
             dataType: 'json',
             data: {
+                uri: $('#uri').val(),
                 original_url: original_url
             },
             success: function (data) {
+                $('#myModal').modal('hide');
                 getData('1');
             },
             error: function (error) {
+                $('#myModal').modal('hide');
                 if(error.responseJSON && error.responseJSON.message){
                     alert(error.responseJSON.message);
                 }else{

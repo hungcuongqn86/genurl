@@ -19,7 +19,6 @@ class CreateUrlsTable extends Migration
             $table->increments('id');
             $table->string('uri',20)->nullable();
             $table->string('original',4000)->nullable();
-            $table->tinyInteger('status')->nullable();
             $table->timestamps();
         });
     }

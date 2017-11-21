@@ -39,9 +39,12 @@ class HomeController extends Controller
     {
         $input = $request->all();
         $arrRules = [
+            'uri' => 'required|unique:urls,uri',
             'original_url' => 'required | url'
         ];
         $arrMessages = [
+            'uri.required' => 'ERRORS_MS.EMPTY_URI',
+            'uri.unique' => 'ERRORS_MS.UNIQUE_URI',
             'original_url.required' => 'ERRORS_MS.EMPTY_ORIGINAL_URL',
             'original_url.url' => 'ERRORS_MS.NOT_ORIGINAL_URL'
         ];
@@ -51,16 +54,11 @@ class HomeController extends Controller
             return response()->error($validator->errors()->all(), 400);
         }
 
-        $uri = self::genUri();
-        if ($uri === '') {
-            return response()->error('NOT_CREATE_URI', 400);
-        }
         DB::beginTransaction();
         try {
             $url = new Url;
             $url->original = $input['original_url'];
-            $url->status = 1;
-            $url->uri = self::genUri();
+            $url->uri = $input['uri'];
             $url->save();
             DB::commit();
             return response()->success([]);
@@ -75,12 +73,18 @@ class HomeController extends Controller
         }
     }
 
+    public function getUri()
+    {
+        $uri = $this->genUri();
+        return response()->success($uri);
+    }
+
     private function genUri($length = 6, $rec = 0)
     {
         $uri = str_random($length);
-        $existing = Url::where('uri', '=', $uri)->where('status', '=', 1)->count();
+        $existing = Url::where('uri', '=', $uri)->count();
         if ($existing > 0) {
-            if ($rec < 10) {
+            if ($rec < 25) {
                 $uri = $this->genUri($length, $rec + 1);
             } else {
                 $uri = '';

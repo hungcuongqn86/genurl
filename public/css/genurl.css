@@ -41,3 +41,8 @@
 .table {
     margin-bottom: 0;
 }
+
+.help-block {
+    color: red;
+    background-color: cornsilk;
+}
