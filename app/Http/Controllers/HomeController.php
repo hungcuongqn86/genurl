@@ -112,7 +112,7 @@ class HomeController extends Controller
 
             $referer = request()->headers->get('referer');
             $source = 'direct';
-            if($referer){
+            if ($referer) {
                 $refData = parse_url($referer);
                 if (strrpos($refData['host'], 'facebook')) {
                     $source = 'facebook';
@@ -146,5 +146,11 @@ class HomeController extends Controller
                 return response()->error('MSG_Error', 400);
             }
         }
+    }
+
+    private function getCountry($code)
+    {
+        $names = json_decode(file_get_contents("http://country.io/names.json"), true);
+        return $names[$code];
     }
 }
