@@ -37,11 +37,35 @@ class HomeController extends Controller
 
     public function analytics($uri, $time)
     {
-        $url = Url::with('Logs')->where('uri', '=', $uri)->first();
-        if ($url) {
-            // dd($url);
+        $urldata = Url::with('Logs')->where('uri', '=', $uri)->first();
+        $cl_country = [];
+        if ($urldata) {
+            $logs = $urldata->Logs;
+            $cl_country = $logs->groupBy('countryCode')->map(function ($log) {
+                return $log->count();
+            });
+
+            $cl_referer = $logs->groupBy('referer')->map(function ($log) {
+                return $log->count();
+            });
+
+            $cl_device_type = $logs->groupBy('device_type')->map(function ($log) {
+                return $log->count();
+            });
+
+            $cl_device = $logs->groupBy('device_name')->map(function ($log) {
+                return $log->count();
+            });
+
+            $cl_platform = $logs->groupBy('platform')->map(function ($log) {
+                return $log->count();
+            });
+
+            $cl_browser = $logs->groupBy('browser')->map(function ($log) {
+                return $log->count();
+            });
         }
-        return view('analytics', compact('$url'));
+        return view('analytics', compact('urldata', 'cl_country', 'cl_referer', 'cl_device_type', 'cl_device', 'cl_platform', 'cl_browser'));
     }
 
     public function shortener(Request $request)
