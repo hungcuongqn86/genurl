@@ -1,3 +1,26 @@
+var datarow = null;
+
+function setRightClick() {
+    $('.data-row').contextmenu(function () {
+        datarow = this;
+    }).contextPopup({
+        items: [
+            {
+                label: 'Copy short URL',
+                action: function () {
+                    ClipboardHelper.copyText($(datarow).attr('short-url'));
+                }
+            },
+            {
+                label: 'Edit URL',
+                action: function () {
+                    alert('Edit URL')
+                }
+            }
+        ]
+    });
+}
+
 function getData(page) {
     showLoading();
     $.ajax({
@@ -7,6 +30,7 @@ function getData(page) {
     }).done(function (data) {
         $("#item-lists").empty().html(data);
         history.pushState({}, null, '?page=' + page);
+        setRightClick();
         hideLoading();
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
         alert('No response from server');
@@ -38,7 +62,6 @@ function hideLoading() {
 }
 
 $(document).ready(function () {
-    var datarow = null;
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -46,24 +69,7 @@ $(document).ready(function () {
     });
 
     // right click menu
-    $('.data-row').contextmenu(function () {
-        datarow = this;
-    }).contextPopup({
-        items: [
-            {
-                label: 'Copy short URL',
-                action: function () {
-                    ClipboardHelper.copyText($(datarow).attr('short-url'));
-                }
-            },
-            {
-                label: 'Edit URL',
-                action: function () {
-                    alert('Edit URL')
-                }
-            }
-        ]
-    });
+    setRightClick();
 
     $('#create-new').click(function () {
         $(".val-alert").hide();

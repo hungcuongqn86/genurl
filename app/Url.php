@@ -9,6 +9,10 @@ class Url extends Model
     //
     protected $table = 'urls';
 
+    public function Logs() {
+        return $this->hasMany(Logs::class,'url_id','id');
+    }
+
     protected $appends = ['source', 'created'];
 
     public function getSourceAttribute()
