@@ -10,11 +10,11 @@
         </thead>
         <tbody>
         @foreach ($urls as $item)
-            <tr id="{{$item->id}}" short-url="{{url('/')}}/{{ $item->uri }}" class="data-row">
+            <tr id="{{$item->id}}" short-url="{{url('/')}}/{{ $item->uri }}" original-url="{{ $item->original }}" class="data-row">
                 <td class="col-md-8 col-sm-8 col-xs-9"><a href="{{ $item->original }}">{{ $item->source }}</a></td>
                 <td class="col-md-2 hidden-xs hidden-sm">{{ $item->created }}</td>
                 <td class="col-md-1 hidden-xs col-sm-2"><a href="{{url('/')}}/{{ $item->uri }}">{{ $item->uri }}</a></td>
-                <td class="col-md-1 col-sm-2 col-xs-3"></td>
+                <td class="col-md-1 col-sm-2 col-xs-3"><a class="a-analytics" href="{{url('/')}}/analytics/{{ $item->uri }}/all_time">{{ sizeof($item->Logs) }}</a></td>
             </tr>
         @endforeach
         </tbody>

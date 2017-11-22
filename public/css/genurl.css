@@ -1,4 +1,7 @@
 body {
+    font-family: Roboto,Helvetica,Arial,sans-serif;
+    line-height: 1.54;
+    color: #444;
     font-size: 12px;
 }
 
@@ -67,4 +70,8 @@ a:hover {
 
 .contextMenuPlugin > li > a {
     padding-left: 10px;
+}
+
+.contextMenuPlugin > li.divider {
+    margin-left: 5px;
 }

@@ -10,7 +10,7 @@
                     </div>
                     <div class="panel-body">
                         <div id="item-lists">
-                            @include('data')
+                            @include('urldata')
                         </div>
                     </div>
                 </div>

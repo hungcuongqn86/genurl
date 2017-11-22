@@ -28,11 +28,20 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $urls = Url::orderBy('created_at', 'desc')->paginate(5);
+        $urls = Url::with('Logs')->orderBy('created_at', 'desc')->paginate(5);
         if ($request->ajax()) {
-            return view('data', compact('urls'));
+            return view('urldata', compact('urls'));
         }
-        return view('home', compact('urls'));
+        return view('index', compact('urls'));
+    }
+
+    public function analytics($uri, $time)
+    {
+        $url = Url::with('Logs')->where('uri', '=', $uri)->first();
+        if ($url) {
+            // dd($url);
+        }
+        return view('analytics', compact('$url'));
     }
 
     public function shortener(Request $request)

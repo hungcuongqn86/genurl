@@ -1,8 +1,9 @@
 var datarow = null;
-
 function setRightClick() {
     $('.data-row').contextmenu(function () {
         datarow = this;
+        $('.data-row').css('background-color', '');
+        $(this).css('background-color', '#f5f5f5');
     }).contextPopup({
         items: [
             {
@@ -12,12 +13,40 @@ function setRightClick() {
                 }
             },
             {
+                label: 'Analytics Data',
+                action: function () {
+                    alert('Analytics Data')
+                }
+            },
+            {
                 label: 'Edit URL',
                 action: function () {
                     alert('Edit URL')
                 }
+            },
+            null
+            ,
+            {
+                label: 'Open URL new tab',
+                action: function () {
+                    window.open($(datarow).attr('original-url'), '_blank');
+                }
+            },
+            {
+                label: 'Open short URL new tab',
+                action: function () {
+                    window.open($(datarow).attr('short-url'), '_blank');
+                }
             }
         ]
+    });
+}
+
+function setAnalyticsClick() {
+    $(document).on('click', 'a.a-analytics', function (event) {
+        event.preventDefault();
+
+        console.log($(this).attr('href'));
     });
 }
 
@@ -31,6 +60,25 @@ function getData(page) {
         $("#item-lists").empty().html(data);
         history.pushState({}, null, '?page=' + page);
         setRightClick();
+        setAnalyticsClick();
+        hideLoading();
+    }).fail(function (jqXHR, ajaxOptions, thrownError) {
+        alert('No response from server');
+        hideLoading();
+    });
+}
+
+function getDetail(page) {
+    showLoading();
+    $.ajax({
+        url: '?page=' + page,
+        type: "get",
+        datatype: "html"
+    }).done(function (data) {
+        $("#item-lists").empty().html(data);
+        history.pushState({}, null, '?page=' + page);
+        setRightClick();
+        setAnalyticsClick();
         hideLoading();
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
         alert('No response from server');
@@ -70,6 +118,8 @@ $(document).ready(function () {
 
     // right click menu
     setRightClick();
+    // analytics
+    setAnalyticsClick();
 
     $('#create-new').click(function () {
         $(".val-alert").hide();

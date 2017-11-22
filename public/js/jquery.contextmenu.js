@@ -98,6 +98,7 @@ jQuery.fn.contextPopup = function(menuData) {
         // If click or right click anywhere else on page: remove clean up.
         bg.remove();
         menu.remove();
+        $('.data-row').css('background-color','');
         return false;
       });
 
@@ -105,6 +106,7 @@ jQuery.fn.contextPopup = function(menuData) {
     menu.find('a').click(function() {
       bg.remove();
       menu.remove();
+      $('.data-row').css('background-color','');
     });
 
     // Cancel event, so real browser popup doesn't appear.
