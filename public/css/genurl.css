@@ -2,6 +2,10 @@ body {
     font-size: 12px;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 #overlay {
     height: 100%;
     width: 100%;
