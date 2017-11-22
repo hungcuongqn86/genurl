@@ -14,6 +14,16 @@ function getData(page) {
     });
 }
 
+var ClipboardHelper = {
+    copyText: function (text) {
+        var $tempInput = $("<textarea>");
+        $("body").append($tempInput);
+        $tempInput.val(text).select();
+        document.execCommand("copy");
+        $tempInput.remove();
+    }
+};
+
 function ValidURL(str) {
     var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
     return regex.test(str);
@@ -28,10 +38,31 @@ function hideLoading() {
 }
 
 $(document).ready(function () {
+    var datarow = null;
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
+    });
+
+    // right click menu
+    $('.data-row').contextmenu(function () {
+        datarow = this;
+    }).contextPopup({
+        items: [
+            {
+                label: 'Copy short URL',
+                action: function () {
+                    ClipboardHelper.copyText($(datarow).attr('short-url'));
+                }
+            },
+            {
+                label: 'Edit URL',
+                action: function () {
+                    alert('Edit URL')
+                }
+            }
+        ]
     });
 
     $('#create-new').click(function () {
@@ -39,7 +70,7 @@ $(document).ready(function () {
         $('#uri').val('');
         $('#original_url').val('');
         $('#myModal').modal('show');
-        $('#myModal').on('shown', function() {
+        $('#myModal').on('shown', function () {
             $("#uri").focus();
         })
     });
@@ -50,17 +81,17 @@ $(document).ready(function () {
             url: '/auto-uri',
             type: "GET",
             success: function (data) {
-                if(!data.error){
+                if (!data.error) {
                     $('#uri').val(data.data);
-                }else{
+                } else {
                     alert(data.message);
                 }
                 hideLoading();
             },
             error: function (error) {
-                if(error.responseJSON && error.responseJSON.message){
+                if (error.responseJSON && error.responseJSON.message) {
                     alert(error.responseJSON.message);
-                }else{
+                } else {
                     alert(error.statusText);
                 }
                 hideLoading();
@@ -99,9 +130,9 @@ $(document).ready(function () {
             },
             error: function (error) {
                 $('#myModal').modal('hide');
-                if(error.responseJSON && error.responseJSON.message){
+                if (error.responseJSON && error.responseJSON.message) {
                     alert(error.responseJSON.message);
-                }else{
+                } else {
                     alert(error.statusText);
                 }
                 hideLoading();

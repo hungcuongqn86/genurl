@@ -54,3 +54,17 @@ a:hover {
     color: red;
     background-color: cornsilk;
 }
+
+.contextMenuPlugin {
+    outline: 1px solid #ddd;
+    padding: 3px;
+}
+
+.contextMenuPlugin > .gutterLine {
+    left: 0;
+    margin-right: 3px;
+}
+
+.contextMenuPlugin > li > a {
+    padding-left: 10px;
+}

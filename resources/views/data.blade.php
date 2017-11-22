@@ -10,7 +10,7 @@
         </thead>
         <tbody>
         @foreach ($urls as $item)
-            <tr>
+            <tr id="{{$item->id}}" short-url="{{url('/')}}/{{ $item->uri }}" class="data-row">
                 <td><a href="{{ $item->original }}">{{ $item->source }}</a></td>
                 <td><a href="{{url('/')}}/{{ $item->uri }}">{{ $item->uri }}</a></td>
                 <td>{{ $item->created }}</td>
