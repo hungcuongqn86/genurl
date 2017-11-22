@@ -11,9 +11,9 @@
         <tbody>
         @foreach ($urls as $item)
             <tr>
-                <td><a href="{{ $item->original }}">{{ $item->original }}</a></td>
-                <td><a href="{{url('/')}}/{{ $item->uri }}">{{url('/')}}/{{ $item->uri }}</a></td>
-                <td>{{ $item->created_at }}</td>
+                <td><a href="{{ $item->original }}">{{ $item->source }}</a></td>
+                <td><a href="{{url('/')}}/{{ $item->uri }}">{{ $item->uri }}</a></td>
+                <td>{{ $item->created }}</td>
                 <td></td>
             </tr>
         @endforeach

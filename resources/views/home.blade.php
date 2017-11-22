@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h1>Simplify your links</h1>
+                    <div class="panel-heading">
                         <button type="button" id="create-new" class="btn btn-primary">Create new</button>
                     </div>
                     <div class="panel-body">
