@@ -8,6 +8,7 @@ class Url extends Model
 {
     //
     protected $table = 'urls';
+    protected $fillable = ['uri', 'original'];
 
     public function Logs() {
         return $this->hasMany(Logs::class,'url_id','id');

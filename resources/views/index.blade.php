@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-default">
+                <div id="list-conten" class="panel panel-default">
                     <div class="panel-heading">
                         <button type="button" id="create-new" class="btn btn-primary">Create new</button>
                     </div>
@@ -13,6 +13,9 @@
                             @include('urldata')
                         </div>
                     </div>
+                </div>
+
+                <div style="display: none;" id="analytics-conten" class="panel panel-default">
                 </div>
             </div>
         </div>
@@ -25,7 +28,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Create shorten URL</h4>
+                    <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -56,6 +59,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="shorten" class="btn btn-primary">Create</button>
+                    <button type="button" id="update-url" class="btn btn-primary">Update</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>

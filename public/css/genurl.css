@@ -99,3 +99,7 @@ a:hover {
     line-height: 22px;
     color: #444;
 }
+
+.btn-back {
+    cursor: pointer;
+}

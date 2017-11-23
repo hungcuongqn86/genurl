@@ -21,7 +21,7 @@ function setRightClick() {
             {
                 label: 'Edit URL',
                 action: function () {
-                    alert('Edit URL')
+                    getDetail($(datarow).attr('id'));
                 }
             },
             null
@@ -42,11 +42,35 @@ function setRightClick() {
     });
 }
 
+function getDetail(id) {
+    showLoading();
+    $.ajax({
+        url: '/get-url/' + id,
+        type: "get",
+        datatype: "json"
+    }).done(function (data) {
+        if (!data.error) {
+            $('.modal-title').text('Update URL');
+            $(".val-alert").hide();
+            $('#uri').val(data.data.uri);
+            $('#original_url').val(data.data.original);
+            $('#update-url').show();
+            $('#shorten').hide();
+            $('#myModal').modal('show');
+        } else {
+            alert(data.message);
+        }
+        hideLoading();
+    }).fail(function (jqXHR, ajaxOptions, thrownError) {
+        alert('No response from server');
+        hideLoading();
+    });
+}
+
 function setAnalyticsClick() {
     $(document).on('click', 'a.a-analytics', function (event) {
         event.preventDefault();
-
-        console.log($(this).attr('href'));
+        getAnalytics($(this).attr('href'));
     });
 }
 
@@ -57,6 +81,8 @@ function getData(page) {
         type: "get",
         datatype: "html"
     }).done(function (data) {
+        $("#analytics-conten").hide();
+        $("#list-conten").show();
         $("#item-lists").empty().html(data);
         history.pushState({}, null, '?page=' + page);
         setRightClick();
@@ -68,17 +94,17 @@ function getData(page) {
     });
 }
 
-function getDetail(page) {
+function getAnalytics(url) {
     showLoading();
     $.ajax({
-        url: '?page=' + page,
+        url: url,
         type: "get",
         datatype: "html"
     }).done(function (data) {
-        $("#item-lists").empty().html(data);
-        history.pushState({}, null, '?page=' + page);
-        setRightClick();
-        setAnalyticsClick();
+        $("#list-conten").hide();
+        $("#analytics-conten").empty().html(data).show();
+        history.pushState({}, null, url);
+        btnBack();
         hideLoading();
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
         alert('No response from server');
@@ -101,12 +127,35 @@ function ValidURL(str) {
     return regex.test(str);
 }
 
+function btnBack() {
+    $('.btn-back').click(function () {
+
+    });
+}
+
 function showLoading() {
     $('#overlay').show();
 }
 
 function hideLoading() {
     $('#overlay').hide();
+}
+
+function validate() {
+    if (!$('#uri').val()) {
+        $('#uri_alert').show();
+        $('#uri').focus();
+        return false;
+    }
+    $('#uri_alert').hide();
+
+    if (!ValidURL($('#original_url').val())) {
+        $('#original_url_alert').show();
+        $('#original_url').focus();
+        return false;
+    }
+    $('#original_url_alert').hide();
+    return true;
 }
 
 $(document).ready(function () {
@@ -121,14 +170,18 @@ $(document).ready(function () {
     // analytics
     setAnalyticsClick();
 
+    $('#myModal').on('show.bs.modal', function (e) {
+        $('#uri').focus();
+    });
+
     $('#create-new').click(function () {
+        $('.modal-title').text('Create shorten URL');
         $(".val-alert").hide();
         $('#uri').val('');
         $('#original_url').val('');
+        $('#update-url').hide();
+        $('#shorten').show();
         $('#myModal').modal('show');
-        $('#myModal').on('shown', function () {
-            $("#uri").focus();
-        })
     });
 
     $('#automatically').click(function () {
@@ -156,44 +209,61 @@ $(document).ready(function () {
     });
 
     $('#shorten').click(function () {
-        if (!$('#uri').val()) {
-            $('#uri_alert').show();
-            $('#uri').focus();
-            return false;
-        }
-        $('#uri_alert').hide();
-
-        if (!ValidURL($('#original_url').val())) {
-            $('#original_url_alert').show();
-            $('#original_url').focus();
-            return false;
-        }
-        $('#original_url_alert').hide();
-
-        var original_url = decodeURIComponent($('#original_url').val());
-        showLoading();
-        $.ajax({
-            url: '/shortener',
-            type: "POST",
-            dataType: 'json',
-            data: {
-                uri: $('#uri').val(),
-                original_url: original_url
-            },
-            success: function (data) {
-                $('#myModal').modal('hide');
-                getData('1');
-            },
-            error: function (error) {
-                $('#myModal').modal('hide');
-                if (error.responseJSON && error.responseJSON.message) {
-                    alert(error.responseJSON.message);
-                } else {
-                    alert(error.statusText);
+        if (validate()) {
+            var original_url = decodeURIComponent($('#original_url').val());
+            showLoading();
+            $.ajax({
+                url: '/shortener',
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    uri: $('#uri').val(),
+                    original_url: original_url
+                },
+                success: function (data) {
+                    $('#myModal').modal('hide');
+                    getData('1');
+                },
+                error: function (error) {
+                    $('#myModal').modal('hide');
+                    if (error.responseJSON && error.responseJSON.message) {
+                        alert(error.responseJSON.message);
+                    } else {
+                        alert(error.statusText);
+                    }
+                    hideLoading();
                 }
-                hideLoading();
-            }
-        });
+            });
+        }
+    });
+
+    $('#update-url').click(function () {
+        if (validate()) {
+            var original_url = decodeURIComponent($('#original_url').val());
+            showLoading();
+            $.ajax({
+                url: '/update-url/' + $(datarow).attr('id'),
+                type: "PUT",
+                dataType: 'json',
+                data: {
+                    uri: $('#uri').val(),
+                    original: original_url
+                },
+                success: function (data) {
+                    $('#myModal').modal('hide');
+                    getData('1');
+                },
+                error: function (error) {
+                    $('#myModal').modal('hide');
+                    if (error.responseJSON && error.responseJSON.message) {
+                        alert(error.responseJSON.message);
+                    } else {
+                        alert(error.statusText);
+                    }
+                    hideLoading();
+                }
+            });
+        }
     });
 
     $(document).on('click', '.pagination a', function (event) {

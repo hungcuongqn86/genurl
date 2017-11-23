@@ -35,7 +35,16 @@ class HomeController extends Controller
         return view('index', compact('urls'));
     }
 
-    public function analytics($uri, $time)
+    public function getUrl($id)
+    {
+        $urldata = Url::where('id', '=', $id)->first()->toArray();
+        if ($urldata) {
+            return response()->success($urldata);
+        }
+        return response()->error('MSG_PDO_Error', 400);
+    }
+
+    public function analytics($uri, $time, Request $request)
     {
         $urldata = Url::with('Logs')->where('uri', '=', $uri)->first();
         $cl_country = [];
@@ -64,6 +73,9 @@ class HomeController extends Controller
             $cl_browser = $logs->groupBy('browser')->map(function ($log) {
                 return $log->count();
             });
+        }
+        if ($request->ajax()) {
+            return view('anldata', compact('urldata', 'cl_country', 'cl_referer', 'cl_device_type', 'cl_device', 'cl_platform', 'cl_browser'));
         }
         return view('analytics', compact('urldata', 'cl_country', 'cl_referer', 'cl_device_type', 'cl_device', 'cl_platform', 'cl_browser'));
     }
@@ -102,6 +114,42 @@ class HomeController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             // throw $e;
+            return response()->error('MSG_Error', 400);
+        }
+    }
+
+    public function updateUrl($id, Request $request)
+    {
+        $input = $request->all();
+        $arrRules = [
+            'uri' => 'required|unique:urls,uri,' . $id,
+            'original' => 'required | url'
+        ];
+        $arrMessages = [
+            'uri.required' => 'ERRORS_MS.EMPTY_URI',
+            'uri.unique' => 'ERRORS_MS.UNIQUE_URI',
+            'original.required' => 'ERRORS_MS.EMPTY_ORIGINAL_URL',
+            'original.url' => 'ERRORS_MS.NOT_ORIGINAL_URL'
+        ];
+
+        $validator = Validator::make($input, $arrRules, $arrMessages);
+        if ($validator->fails()) {
+            return response()->error($validator->errors()->all(), 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            $url = Url::find($id);
+            $url->update($input);
+            DB::commit();
+            return response()->success([]);
+        } catch (\PDOException $e) {
+            DB::rollBack();
+            // throw $e;
+            return response()->error('MSG_PDO_Error', 400);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
             return response()->error('MSG_Error', 400);
         }
     }
