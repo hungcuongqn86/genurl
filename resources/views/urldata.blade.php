@@ -25,7 +25,7 @@
                     <div class="open-action dropdown">
                         <a data-toggle="dropdown"><i class="glyphicon glyphicon-option-vertical"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li class="analytics-data"><a href="#">Analytics Data</a></li>
+                            <li class="analytics-data"><a class="a-analytics" href="{{url('/')}}/analytics/{{ $item->uri }}/all_time">Analytics Data</a></li>
                             <li class="edit-url"><a href="#">Edit URL</a></li>
                         </ul>
                     </div>
