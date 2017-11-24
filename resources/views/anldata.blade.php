@@ -1,9 +1,12 @@
 <div class="panel-heading">
-    <h1><a class="btn-back"><i class="glyphicon glyphicon-circle-arrow-left"></i></a> Analytics data for <a style="word-wrap: break-word;" href="{{url('/')}}/{{ $urldata->uri }}">{{url('/')}}/{{ $urldata->uri }}</a></h1>
+    <h1><a class="btn-back"><i class="glyphicon glyphicon-circle-arrow-left"></i></a> Analytics data for <a
+                style="word-wrap: break-word;" href="{{url('/')}}/{{ $urldata->uri }}">{{url('/')}}
+            /{{ $urldata->uri }}</a></h1>
     <div class="row">
         <div class="col-md-10">
             <p>Created {{$urldata->created}}</p>
-            <p>Original URL: <a style="word-wrap: break-word;" href="{{ $urldata->original }}">{{ $urldata->source }}</a></p>
+            <p>Original URL: <a style="word-wrap: break-word;"
+                                href="{{ $urldata->original }}">{{ $urldata->source }}</a></p>
         </div>
         <div class="col-md-2">
             <div class="form-group">
@@ -32,7 +35,7 @@
                     </div>
                     <div class="panel-body">
                         @foreach ($cl_country as $key => $item)
-                            <p>{{$key}}: {{$item}}</p>
+                            <p>{{$key?$key:'unknown'}}: {{$item}}</p>
                         @endforeach
                     </div>
                 </div>
@@ -56,12 +59,13 @@
                     </div>
                     <div class="panel-body">
                         @foreach ($cl_device_type as $key => $item)
-                            <p>{{$key}}: {{$item}}</p>
+                            <p>{{$key==1?'Desktop':($key==2?'Phone':($key==3?'Robot':''))}}: {{$item}}</p>
                         @endforeach
                     </div>
                 </div>
             </div>
-            <div class="col-md-2"><div class="panel panel-default">
+            <div class="col-md-2">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4>Device</h4>
                     </div>
