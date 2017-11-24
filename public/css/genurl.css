@@ -72,16 +72,29 @@ a:hover {
     overflow: hidden;
 }
 
-.open-action {
+.data-row .open-action {
     display: block;
     height: 24px;
     width: 24px;
-    border: 1px solid #ddd;
+    border: 1px solid #fff;
     border-radius: 50%;
-    background-color: #ddd;
+    background-color: #fff;
     line-height: 24px;
     text-align: center;
     cursor: pointer;
+}
+
+.data-row .open-action a.action{
+    color: #fff;
+}
+
+.data-row:hover .open-action {
+    border: 1px solid #ddd;
+    background-color: #ddd;
+}
+
+.data-row:hover .open-action a.action{
+    color: #3097D1;
 }
 
 .open-action a {
@@ -119,13 +132,14 @@ a:hover {
     margin: 15px auto;
     width: max-content;
     position: relative;
-    min-height: 35px;
+    min-height: 66px;
     padding: 4px 8px;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: bold;
     background-color: white;
     border: 1px solid #c6c6c6;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    line-height: 30px;
 }
 
 .count {

@@ -23,7 +23,7 @@
                 </td>
                 <td class="col-md-1 col-sm-1 hidden-xs">
                     <div class="open-action dropdown">
-                        <a data-toggle="dropdown"><i class="glyphicon glyphicon-option-vertical"></i></a>
+                        <a class="action" data-toggle="dropdown"><i class="glyphicon glyphicon-option-vertical"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li class="analytics-data"><a class="a-analytics" href="{{url('/')}}/analytics/{{ $item->uri }}/all_time">Analytics Data</a></li>
                             <li class="edit-url"><a href="#">Edit URL</a></li>
