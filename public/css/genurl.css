@@ -58,6 +58,13 @@ a:hover {
     margin-bottom: 0;
 }
 
+.long-url {
+    max-width: 25vw;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 .help-block {
     color: red;
     background-color: cornsilk;
