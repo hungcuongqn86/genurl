@@ -1,3 +1,5 @@
+var page = 1;
+
 function setupMenu() {
     $('.edit-url').unbind('click').click(function () {
         getDetail($(this).closest( "tr" ).attr('id'));
@@ -12,14 +14,14 @@ function setupMenu() {
 function getData(page) {
     showLoading($('#list-conten'));
     $.ajax({
-        url: '?page=' + page,
+        url: rooturl + '?page=' + page,
         type: "get",
         datatype: "html"
     }).done(function (data) {
         $("#analytics-conten").hide();
         $("#list-conten").show();
         $("#item-lists").empty().html(data);
-        history.pushState({}, null, '?page=' + page);
+        history.pushState({}, null, rooturl + '?page=' + page);
         setupMenu();
         hideLoading($('#list-conten'));
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
@@ -55,7 +57,7 @@ function getDetail(id) {
                         success: function (data) {
                             $('#myModal').modal('hide');
                             hideLoading($('#myModal-modal-content'));
-                            getData('1');
+                            getData(page);
                         },
                         error: function (error) {
                             $('#myModal').modal('hide');
@@ -101,7 +103,7 @@ function getAnalytics(url) {
 
 function btnBack() {
     $('.btn-back').unbind('click').click(function () {
-
+        getData(page);
     });
 }
 
@@ -145,6 +147,7 @@ $(document).ready(function () {
     });
 
     setupMenu();
+    btnBack();
 
     $('#myModal').on('show.bs.modal', function (e) {
         $('#uri').focus();
@@ -216,7 +219,7 @@ $(document).ready(function () {
         $('li').removeClass('active');
         $(this).parent('li').addClass('active');
         event.preventDefault();
-        var page = $(this).attr('href').split('page=')[1];
+        page = $(this).attr('href').split('page=')[1];
         getData(page);
     });
 });

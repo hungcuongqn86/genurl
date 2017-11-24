@@ -13,6 +13,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/genurl.css') }}" rel="stylesheet">
+    <script>
+        var rooturl = '{{url('/')}}';
+    </script>
 </head>
 <body>
     <div id="app">
