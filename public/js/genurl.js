@@ -10,7 +10,7 @@ function setupMenu() {
 }
 
 function getData(page) {
-    showLoading();
+    showLoading($('#list-conten'));
     $.ajax({
         url: '?page=' + page,
         type: "get",
@@ -21,15 +21,15 @@ function getData(page) {
         $("#item-lists").empty().html(data);
         history.pushState({}, null, '?page=' + page);
         setupMenu();
-        hideLoading();
+        hideLoading($('#list-conten'));
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
         alert('No response from server');
-        hideLoading();
+        hideLoading($('#list-conten'));
     });
 }
 
 function getDetail(id) {
-    showLoading();
+    showLoading($('#list-conten'));
     $.ajax({
         url: '/get-url/' + id,
         type: "get",
@@ -43,7 +43,7 @@ function getDetail(id) {
             $('#update-url').show().unbind('click').click(function () {
                 if (validate()) {
                     var original_url = decodeURIComponent($('#original_url').val());
-                    showLoading();
+                    showLoading($('#myModal-modal-content'));
                     $.ajax({
                         url: '/update-url/' + id,
                         type: "PUT",
@@ -54,6 +54,7 @@ function getDetail(id) {
                         },
                         success: function (data) {
                             $('#myModal').modal('hide');
+                            hideLoading($('#myModal-modal-content'));
                             getData('1');
                         },
                         error: function (error) {
@@ -63,7 +64,7 @@ function getDetail(id) {
                             } else {
                                 alert(error.statusText);
                             }
-                            hideLoading();
+                            hideLoading($('#myModal-modal-content'));
                         }
                     });
                 }
@@ -73,15 +74,15 @@ function getDetail(id) {
         } else {
             alert(data.message);
         }
-        hideLoading();
+        hideLoading($('#list-conten'));
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
         alert('No response from server');
-        hideLoading();
+        hideLoading($('#list-conten'));
     });
 }
 
 function getAnalytics(url) {
-    showLoading();
+    showLoading($('#list-conten'));
     $.ajax({
         url: url,
         type: "get",
@@ -91,10 +92,10 @@ function getAnalytics(url) {
         $("#analytics-conten").empty().html(data).show();
         history.pushState({}, null, url);
         btnBack();
-        hideLoading();
+        hideLoading($('#list-conten'));
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
         alert('No response from server');
-        hideLoading();
+        hideLoading($('#list-conten'));
     });
 }
 
@@ -104,12 +105,14 @@ function btnBack() {
     });
 }
 
-function showLoading() {
-    $('#overlay').show();
+function showLoading(div) {
+    if ($(div).find('.data-loading').length === 0) {
+        $(div).addClass('dataload').append('<div class="data-loading"><span style="margin: auto;"><div id="loader"></div></span></div>');
+    }
 }
 
-function hideLoading() {
-    $('#overlay').hide();
+function hideLoading(div) {
+    $(div).find('.data-loading').remove();
 }
 
 function validate() {
@@ -156,7 +159,7 @@ $(document).ready(function () {
         $('#shorten').show().unbind('click').click(function () {
             if (validate()) {
                 var original_url = decodeURIComponent($('#original_url').val());
-                showLoading();
+                showLoading($('#myModal-modal-content'));
                 $.ajax({
                     url: '/shortener',
                     type: "POST",
@@ -167,6 +170,7 @@ $(document).ready(function () {
                     },
                     success: function (data) {
                         $('#myModal').modal('hide');
+                        hideLoading($('#myModal-modal-content'));
                         getData('1');
                     },
                     error: function (error) {
@@ -176,7 +180,7 @@ $(document).ready(function () {
                         } else {
                             alert(error.statusText);
                         }
-                        hideLoading();
+                        hideLoading($('#myModal-modal-content'));
                     }
                 });
             }
@@ -185,7 +189,7 @@ $(document).ready(function () {
     });
 
     $('#automatically').unbind('click').click(function () {
-        showLoading();
+        showLoading($('#myModal-modal-content'));
         $.ajax({
             url: '/auto-uri',
             type: "GET",
@@ -195,7 +199,7 @@ $(document).ready(function () {
                 } else {
                     alert(data.message);
                 }
-                hideLoading();
+                hideLoading($('#myModal-modal-content'));
             },
             error: function (error) {
                 if (error.responseJSON && error.responseJSON.message) {
@@ -203,7 +207,7 @@ $(document).ready(function () {
                 } else {
                     alert(error.statusText);
                 }
-                hideLoading();
+                hideLoading($('#myModal-modal-content'));
             }
         });
     });
