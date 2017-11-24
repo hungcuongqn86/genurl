@@ -46,7 +46,33 @@ class HomeController extends Controller
 
     public function analytics($uri, $time, Request $request)
     {
-        $urldata = Url::with('Logs')->where('uri', '=', $uri)->first();
+        $query = Url::with('Logs')->where('uri', '=', $uri);
+        if ($time !== 'all_time') {
+            $date = new \DateTime();
+
+            if ($time === 'two_hours') {
+                $date->sub(new \DateInterval('PT2H'));
+            }
+
+            if ($time === 'day') {
+                $date->sub(new \DateInterval('P1D'));
+            }
+
+            if ($time === 'week') {
+                $date->sub(new \DateInterval('P7D'));
+            }
+
+            if ($time === 'month') {
+                $date = clone $date;
+                $date->add(new \DateInterval("P1M"));
+            }
+
+            $query = Url::with(['Logs' => function ($query) use ($date) {
+                $query->where('created_at', '>=', $date);
+            }])->where('uri', '=', $uri);
+        }
+
+        $urldata = $query->first();
         $cl_country = [];
         if ($urldata) {
             $logs = $urldata->Logs;
