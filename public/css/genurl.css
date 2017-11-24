@@ -65,6 +65,22 @@ a:hover {
     overflow: hidden;
 }
 
+.open-action {
+    display: block;
+    height: 24px;
+    width: 24px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    background-color: #ddd;
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    font-size: 12px;
+}
+
 .help-block {
     color: red;
     background-color: cornsilk;

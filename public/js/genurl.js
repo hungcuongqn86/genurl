@@ -1,46 +1,4 @@
 var datarow = null;
-function setRightClick() {
-    $('.data-row').contextmenu(function () {
-        datarow = this;
-        $('.data-row').css('background-color', '');
-        $(this).css('background-color', '#f5f5f5');
-    }).contextPopup({
-        items: [
-            {
-                label: 'Copy short URL',
-                action: function () {
-                    ClipboardHelper.copyText($(datarow).attr('short-url'));
-                }
-            },
-            {
-                label: 'Analytics Data',
-                action: function () {
-                    alert('Analytics Data')
-                }
-            },
-            {
-                label: 'Edit URL',
-                action: function () {
-                    getDetail($(datarow).attr('id'));
-                }
-            },
-            null
-            ,
-            {
-                label: 'Open URL new tab',
-                action: function () {
-                    window.open($(datarow).attr('original-url'), '_blank');
-                }
-            },
-            {
-                label: 'Open short URL new tab',
-                action: function () {
-                    window.open($(datarow).attr('short-url'), '_blank');
-                }
-            }
-        ]
-    });
-}
 
 function getDetail(id) {
     showLoading();
@@ -85,8 +43,8 @@ function getData(page) {
         $("#list-conten").show();
         $("#item-lists").empty().html(data);
         history.pushState({}, null, '?page=' + page);
-        setRightClick();
         setAnalyticsClick();
+        setupMenu();
         hideLoading();
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
         alert('No response from server');
@@ -111,16 +69,6 @@ function getAnalytics(url) {
         hideLoading();
     });
 }
-
-var ClipboardHelper = {
-    copyText: function (text) {
-        var $tempInput = $("<textarea>");
-        $("body").append($tempInput);
-        $tempInput.val(text).select();
-        document.execCommand("copy");
-        $tempInput.remove();
-    }
-};
 
 function ValidURL(str) {
     var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
@@ -158,6 +106,17 @@ function validate() {
     return true;
 }
 
+function setupMenu() {
+    $('.analytics-data').click(function () {
+        datarow = $(this).closest( "tr" );
+    });
+
+    $('.edit-url').click(function () {
+        datarow = $(this).closest( "tr" );
+        getDetail($(datarow).attr('id'));
+    });
+}
+
 $(document).ready(function () {
     $.ajaxSetup({
         headers: {
@@ -165,8 +124,6 @@ $(document).ready(function () {
         }
     });
 
-    // right click menu
-    setRightClick();
     // analytics
     setAnalyticsClick();
 
@@ -183,6 +140,8 @@ $(document).ready(function () {
         $('#shorten').show();
         $('#myModal').modal('show');
     });
+
+    setupMenu();
 
     $('#automatically').click(function () {
         showLoading();
@@ -206,6 +165,10 @@ $(document).ready(function () {
                 hideLoading();
             }
         });
+    });
+
+    $('.open-action').click(function () {
+
     });
 
     $('#shorten').click(function () {

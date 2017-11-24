@@ -12,7 +12,6 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/jquery.contextmenu.css') }}" rel="stylesheet">
     <link href="{{ asset('css/genurl.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -81,7 +80,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/jquery.contextmenu.js') }}"></script>
     <script src="{{ asset('js/genurl.js') }}"></script>
 </body>
 </html>

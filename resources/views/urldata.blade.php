@@ -13,7 +13,8 @@
         @foreach ($urls as $item)
             <tr id="{{$item->id}}" short-url="{{url('/')}}/{{ $item->uri }}" original-url="{{ $item->original }}"
                 class="data-row">
-                <td class="col-md-8 col-sm-8 col-xs-9 long-url"><a href="{{ $item->original }}">{{ $item->source }}</a></td>
+                <td class="col-md-8 col-sm-8 col-xs-9 long-url"><a href="{{ $item->original }}">{{ $item->source }}</a>
+                </td>
                 <td class="col-md-2 hidden-xs hidden-sm">{{ $item->created }}</td>
                 <td class="col-md-1 hidden-xs col-sm-2"><a href="{{url('/')}}/{{ $item->uri }}">{{ $item->uri }}</a>
                 </td>
@@ -21,7 +22,13 @@
                                                           href="{{url('/')}}/analytics/{{ $item->uri }}/all_time">{{ sizeof($item->Logs) }}</a>
                 </td>
                 <td class="col-md-1 col-sm-1 hidden-xs">
-                    <a><i class="glyphicon glyphicon-option-vertical"></i></a>
+                    <div class="open-action dropdown">
+                        <a data-toggle="dropdown"><i class="glyphicon glyphicon-option-vertical"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li class="analytics-data"><a href="#">Analytics Data</a></li>
+                            <li class="edit-url"><a href="#">Edit URL</a></li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         @endforeach
