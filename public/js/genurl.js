@@ -1,9 +1,9 @@
 function setupMenu() {
-    $('.edit-url').click(function () {
+    $('.edit-url').unbind('click').click(function () {
         getDetail($(this).closest( "tr" ).attr('id'));
     });
 
-    $(document).on('click', 'a.a-analytics', function (event) {
+    $('a.a-analytics').unbind('click').click(function (event) {
         event.preventDefault();
         getAnalytics($(this).attr('href'));
     });
@@ -99,7 +99,7 @@ function getAnalytics(url) {
 }
 
 function btnBack() {
-    $('.btn-back').click(function () {
+    $('.btn-back').unbind('click').click(function () {
 
     });
 }
@@ -147,7 +147,7 @@ $(document).ready(function () {
         $('#uri').focus();
     });
 
-    $('#create-new').click(function () {
+    $('#create-new').unbind('click').click(function () {
         $('.modal-title').text('Create shorten URL');
         $(".val-alert").hide();
         $('#uri').val('');
@@ -184,7 +184,7 @@ $(document).ready(function () {
         $('#myModal').modal('show');
     });
 
-    $('#automatically').click(function () {
+    $('#automatically').unbind('click').click(function () {
         showLoading();
         $.ajax({
             url: '/auto-uri',
