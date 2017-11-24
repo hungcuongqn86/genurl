@@ -9,6 +9,10 @@ function setupMenu() {
         event.preventDefault();
         getAnalytics($(this).attr('href'));
     });
+
+    $('#timeframe').unbind('change').change(function () {
+        getAnalytics($(this).val());
+    });
 }
 
 function getData(page) {
@@ -95,6 +99,7 @@ function getAnalytics(url) {
         $("#analytics-conten").empty().html(data).show();
         history.pushState({}, null, url);
         btnBack();
+        setupMenu();
         hideLoading($('#list-conten'));
     }).fail(function (jqXHR, ajaxOptions, thrownError) {
         alert('No response from server');

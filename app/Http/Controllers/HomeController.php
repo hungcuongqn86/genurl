@@ -64,7 +64,7 @@ class HomeController extends Controller
 
             if ($time === 'month') {
                 $date = clone $date;
-                $date->add(new \DateInterval("P1M"));
+                $date->sub(new \DateInterval("P1M"));
             }
 
             $query = Url::with(['Logs' => function ($query) use ($date) {
@@ -101,9 +101,9 @@ class HomeController extends Controller
             });
         }
         if ($request->ajax()) {
-            return view('anldata', compact('urldata', 'cl_country', 'cl_referer', 'cl_device_type', 'cl_device', 'cl_platform', 'cl_browser'));
+            return view('anldata', compact('urldata', 'cl_country', 'cl_referer', 'cl_device_type', 'cl_device', 'cl_platform', 'cl_browser', 'time'));
         }
-        return view('analytics', compact('urldata', 'cl_country', 'cl_referer', 'cl_device_type', 'cl_device', 'cl_platform', 'cl_browser'));
+        return view('analytics', compact('urldata', 'cl_country', 'cl_referer', 'cl_device_type', 'cl_device', 'cl_platform', 'cl_browser', 'time'));
     }
 
     public function shortener(Request $request)
