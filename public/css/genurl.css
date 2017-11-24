@@ -59,6 +59,7 @@ a:hover {
 
 .form-control {
     box-shadow: none;
+    font-size: 12px;
 }
 
 .table {
