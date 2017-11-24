@@ -84,7 +84,7 @@ a:hover {
     cursor: pointer;
 }
 
-.data-row .open-action a.action{
+.data-row .open-action a.action {
     color: #fff;
 }
 
@@ -93,7 +93,7 @@ a:hover {
     background-color: #ddd;
 }
 
-.data-row:hover .open-action a.action{
+.data-row:hover .open-action a.action {
     color: #3097D1;
 }
 
@@ -150,4 +150,10 @@ a:hover {
 
 .btn-back {
     cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    ul.pagination li:not(.show-mobile) {
+        display: none;
+    }
 }

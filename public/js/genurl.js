@@ -2,7 +2,7 @@ var page = 1;
 
 function setupMenu() {
     $('.edit-url').unbind('click').click(function () {
-        getDetail($(this).closest( "tr" ).attr('id'));
+        getDetail($(this).closest("tr").attr('id'));
     });
 
     $('a.a-analytics').unbind('click').click(function (event) {
@@ -21,6 +21,7 @@ function getData(page) {
         $("#analytics-conten").hide();
         $("#list-conten").show();
         $("#item-lists").empty().html(data);
+        pagination();
         history.pushState({}, null, rooturl + '?page=' + page);
         setupMenu();
         hideLoading($('#list-conten'));
@@ -139,15 +140,28 @@ function ValidURL(str) {
     return regex.test(str);
 }
 
+function pagination() {
+    $('ul.pagination li.active')
+        .prev().addClass('show-mobile')
+        .prev().addClass('show-mobile');
+    $('ul.pagination li.active')
+        .next().addClass('show-mobile')
+        .next().addClass('show-mobile');
+    $('ul.pagination')
+        .find('li:first-child, li:last-child, li.active')
+        .addClass('show-mobile');
+}
+
 $(document).ready(function () {
+    pagination();
+    setupMenu();
+    btnBack();
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
-    setupMenu();
-    btnBack();
 
     $('#myModal').on('show.bs.modal', function (e) {
         $('#uri').focus();
