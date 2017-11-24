@@ -43,8 +43,8 @@ class Url extends Model
                 return $interval->m.' months ago';
             }
 
-            if($interval->m){
-                return $interval->m.' days ago';
+            if($interval->d){
+                return $interval->d.' days ago';
             }
 
             if($interval->h){
