@@ -1,5 +1,5 @@
 <div class="panel-heading">
-    <h1><a class="btn-back"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a> Analytics data for <a href="{{url('/')}}/{{ $urldata->uri }}">{{url('/')}}/{{ $urldata->uri }}</a></h1>
+    <h1><a class="btn-back"><i class="glyphicon glyphicon-circle-arrow-left"></i></a> Analytics data for <a href="{{url('/')}}/{{ $urldata->uri }}">{{url('/')}}/{{ $urldata->uri }}</a></h1>
     <div class="row">
         <div class="col-md-10">
             <p>Created {{$urldata->created}}</p>
