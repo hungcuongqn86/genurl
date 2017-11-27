@@ -13,6 +13,10 @@ function setupMenu() {
     $('#timeframe').unbind('change').change(function () {
         getAnalytics($(this).val());
     });
+
+    $('.copy-short-url').unbind('click').click(function (event) {
+        ClipboardHelper.copyText($(this).attr('short-url'));
+    });
 }
 
 function getData(page) {
@@ -38,7 +42,7 @@ function getData(page) {
 function getDetail(id) {
     showLoading($('#list-conten'));
     $.ajax({
-        url: '/get-url/' + id,
+        url: rooturl + '/get-url/' + id,
         type: "get",
         datatype: "json"
     }).done(function (data) {
@@ -52,7 +56,7 @@ function getDetail(id) {
                     var original_url = decodeURIComponent($('#original_url').val());
                     showLoading($('#myModal-modal-content'));
                     $.ajax({
-                        url: '/update-url/' + id,
+                        url: rooturl + '/update-url/' + id,
                         type: "PUT",
                         dataType: 'json',
                         data: {
@@ -157,6 +161,16 @@ function pagination() {
         .addClass('show-mobile');
 }
 
+var ClipboardHelper = {
+    copyText: function (text) {
+        var $tempInput = $("<textarea>");
+        $("body").append($tempInput);
+        $tempInput.val(text).select();
+        document.execCommand("copy");
+        $tempInput.remove();
+    }
+};
+
 $(document).ready(function () {
     pagination();
     setupMenu();
@@ -183,7 +197,7 @@ $(document).ready(function () {
                 var original_url = decodeURIComponent($('#original_url').val());
                 showLoading($('#myModal-modal-content'));
                 $.ajax({
-                    url: '/shortener',
+                    url: rooturl + '/shortener',
                     type: "POST",
                     dataType: 'json',
                     data: {
@@ -213,7 +227,7 @@ $(document).ready(function () {
     $('#automatically').unbind('click').click(function () {
         showLoading($('#myModal-modal-content'));
         $.ajax({
-            url: '/auto-uri',
+            url: rooturl + '/auto-uri',
             type: "GET",
             success: function (data) {
                 if (!data.error) {

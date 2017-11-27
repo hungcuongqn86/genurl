@@ -11,9 +11,6 @@
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
 Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/get-url/{id}', 'HomeController@getUrl')->name('get-url');
@@ -21,4 +18,4 @@ Route::put('/update-url/{id}', 'HomeController@updateUrl')->name('update-url');
 Route::get('/analytics/{uri}/{time}', 'HomeController@analytics')->name('analytics');
 Route::get('/auto-uri', 'HomeController@getUri')->name('auto-uri');
 Route::post('/shortener', 'HomeController@shortener')->name('shortener');
-Route::get('/{uri}', 'HomeController@process')->name('process');
+Route::get('/{uri}', 'ProcessController@index')->name('process');

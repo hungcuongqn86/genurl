@@ -17,6 +17,7 @@
                 </td>
                 <td class="col-md-2 hidden-xs hidden-sm">{{ $item->created }}</td>
                 <td class="col-md-1 hidden-xs col-sm-2"><a href="{{url('/')}}/{{ $item->uri }}">{{ $item->uri }}</a>
+                    <div short-url="{{url('/')}}/{{ $item->uri }}" class="open-action copy-short-url" title="Copy short URL"><a class="action"><i class="glyphicon glyphicon-duplicate"></i></a></div>
                 </td>
                 <td class="col-md-1 col-sm-2 col-xs-3"><a class="a-analytics"
                                                           href="{{url('/')}}/analytics/{{ $item->uri }}/all_time">{{ sizeof($item->Logs) }}</a>
