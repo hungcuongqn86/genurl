@@ -10,6 +10,10 @@ class Url extends Model
     protected $table = 'urls';
     protected $fillable = ['uri', 'original'];
 
+    public function ShortLinks() {
+        return $this->hasMany(ShortLinks::class,'url_id','id');
+    }
+
     public function Logs() {
         return $this->hasMany(Logs::class,'url_id','id');
     }
