@@ -14,11 +14,11 @@
                     </div>
                 </div>
 
-                <div style="display: none;" id="detail-conten" class="panel panel-default">
-                    @include('detailldata')
+                <div id="detail-conten" class="panel panel-default">
+                    @include('detaildata')
                 </div>
 
-                <div id="analytics-conten" class="panel panel-default">
+                <div style="display: none;" id="analytics-conten" class="panel panel-default">
                 </div>
             </div>
         </div>

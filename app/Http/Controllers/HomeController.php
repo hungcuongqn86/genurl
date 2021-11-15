@@ -34,13 +34,16 @@ class HomeController extends Controller
         return view('index', compact('urls'));
     }
 
-    public function getUrl($id)
+    public function getUrl($id, Request $request)
     {
-        $urldata = Url::where('id', '=', $id)->first()->toArray();
-        if ($urldata) {
-            return response()->success($urldata);
+        $urldata = Url::with('ShortLinks')->where('id', '=', $id)->first();
+        if ($request->ajax()) {
+            return view('detaildata', compact('urldata'));
         }
-        return response()->error('MSG_PDO_Error', 400);
+
+        $title ="Test";
+        // dd($urldata);
+        return view('detail', compact('urldata', 'title'));
     }
 
     public function analytics($uri, $time, Request $request)
