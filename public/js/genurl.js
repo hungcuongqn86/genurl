@@ -2,7 +2,7 @@ var page = 1;
 
 function setupMenu() {
     $('.edit-url').unbind('click').click(function () {
-        getDetail($(this).closest("tr").attr('id'));
+        getUrlDetail($(this).closest("tr").attr('id'));
     });
 
     $('a.a-analytics').unbind('click').click(function (event) {
@@ -31,6 +31,26 @@ function getData(page) {
         $("#item-lists").empty().html(data);
         pagination();
         history.pushState({}, null, rooturl + '?page=' + page);
+        setupMenu();
+        hideLoading($('#list-conten'));
+    }).fail(function (jqXHR, ajaxOptions, thrownError) {
+        alert('No response from server');
+        hideLoading($('#list-conten'));
+    });
+}
+
+function getUrlDetail(id) {
+    showLoading($('#list-conten'));
+    var url = rooturl + '/get-url/' + id;
+    $.ajax({
+        url: url,
+        type: "get",
+        datatype: "html"
+    }).done(function (data) {
+        $("#list-conten").hide();
+        $("#detail-conten").empty().html(data).show();
+        history.pushState({}, null, url);
+        btnBack();
         setupMenu();
         hideLoading($('#list-conten'));
     }).fail(function (jqXHR, ajaxOptions, thrownError) {

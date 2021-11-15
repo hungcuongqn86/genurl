@@ -15,6 +15,9 @@
                     </div>
                 </div>
 
+                <div style="display: none;" id="detail-conten" class="panel panel-default">
+                </div>
+
                 <div style="display: none;" id="analytics-conten" class="panel panel-default">
                 </div>
             </div>
