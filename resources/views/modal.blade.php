@@ -8,6 +8,16 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <label for="original_url">Original URL</label>
+                    <input id="original_url" type="url" class="form-control"
+                           placeholder="Your original URL here">
+                    <div id="original_url_alert" class="val-alert" style="display: none;">
+                            <span class="help-block">
+                                Not original URL
+                            </span>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="uri">Short URL</label>
                     <div class="input-group">
                         <span class="input-group-addon">{{url('/')}}/</span>
@@ -19,16 +29,6 @@
                     <div id="uri_alert" class="val-alert" style="display: none;">
                             <span class="help-block">
                                 Not short URL
-                            </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="original_url">Original URL</label>
-                    <input id="original_url" type="url" class="form-control"
-                           placeholder="Your original URL here">
-                    <div id="original_url_alert" class="val-alert" style="display: none;">
-                            <span class="help-block">
-                                Not original URL
                             </span>
                     </div>
                 </div>
