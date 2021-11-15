@@ -14,8 +14,11 @@
                     </div>
                 </div>
 
+                <div style="display: none;" id="detail-conten" class="panel panel-default">
+                    @include('detailldata')
+                </div>
+
                 <div id="analytics-conten" class="panel panel-default">
-                    @include('anldata')
                 </div>
             </div>
         </div>
