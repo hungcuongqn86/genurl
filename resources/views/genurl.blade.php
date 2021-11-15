@@ -21,41 +21,25 @@
                     <label for="title">Title</label>
                     <input id="title" type="text" class="form-control"
                            placeholder="Your Title of links here">
-                    <div id="title_alert" class="val-alert" style="display: none;">
-                            <span class="help-block">
-                                Not Title of links
-                            </span>
-                    </div>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
                     <input id="description" type="text" class="form-control"
                            placeholder="Your Description of links here">
-                    <div id="description_alert" class="val-alert" style="display: none;">
-                            <span class="help-block">
-                                Not Description of links
-                            </span>
-                    </div>
                 </div>
                 <div class="form-group">
                     <label for="image">Image</label>
-                    <input id="image" type="file">
+                    <input id="image" type="file" accept="image/*">
                 </div>
 
                 <div class="form-group">
                     <label for="count">Number of links</label>
                     <input id="count" type="number" class="form-control" value="5"
                            placeholder="Your Number of links here">
-                    <div id="count_alert" class="val-alert" style="display: none;">
-                            <span class="help-block">
-                                Not Number of links
-                            </span>
-                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" id="shorten" class="btn btn-primary">Create</button>
-                <button type="button" id="update-url" class="btn btn-primary">Update</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

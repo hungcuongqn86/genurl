@@ -128,13 +128,6 @@ function hideLoading(div) {
 }
 
 function validate() {
-    if (!$('#uri').val()) {
-        $('#uri_alert').show();
-        $('#uri').focus();
-        return false;
-    }
-    $('#uri_alert').hide();
-
     if (!ValidURL($('#original_url').val())) {
         $('#original_url_alert').show();
         $('#original_url').focus();
@@ -193,9 +186,12 @@ $(document).ready(function () {
     $('#create-new').unbind('click').click(function () {
         $('.modal-title').text('Create shorten URL');
         $(".val-alert").hide();
-        $('#uri').val('');
+
         $('#original_url').val('');
-        $('#update-url').hide();
+        $('#title').val('');
+        $('#description').val('');
+        $('#image').val('');
+
         $('#shorten').show().unbind('click').click(function () {
             if (validate()) {
                 var original_url = decodeURIComponent($('#original_url').val());
@@ -205,8 +201,10 @@ $(document).ready(function () {
                     type: "POST",
                     dataType: 'json',
                     data: {
-                        uri: $('#uri').val(),
-                        original_url: original_url
+                        original_url: original_url,
+                        count: $('#count').val(),
+                        title: $('#title').val(),
+                        description: $('#description').val(),
                     },
                     success: function (data) {
                         $('#myModal').modal('hide');
