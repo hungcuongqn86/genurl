@@ -207,12 +207,12 @@ $(document).ready(function () {
                         description: $('#description').val(),
                     },
                     success: function (data) {
-                        $('#myModal').modal('hide');
+                        $('#genUrlModal').modal('hide');
                         hideLoading($('#myModal-modal-content'));
                         getData('1');
                     },
                     error: function (error) {
-                        $('#myModal').modal('hide');
+                        $('#genUrlModal').modal('hide');
                         if (error.responseJSON && error.responseJSON.message) {
                             alert(error.responseJSON.message);
                         } else {

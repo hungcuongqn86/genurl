@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ShortLinks;
 use App\Url;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -108,12 +109,9 @@ class HomeController extends Controller
     {
         $input = $request->all();
         $arrRules = [
-            'uri' => 'required|unique:urls,uri',
             'original_url' => 'required | url'
         ];
         $arrMessages = [
-            'uri.required' => 'ERRORS_MS.EMPTY_URI',
-            'uri.unique' => 'ERRORS_MS.UNIQUE_URI',
             'original_url.required' => 'ERRORS_MS.EMPTY_ORIGINAL_URL',
             'original_url.url' => 'ERRORS_MS.NOT_ORIGINAL_URL'
         ];
@@ -123,12 +121,27 @@ class HomeController extends Controller
             return response()->error($validator->errors()->all(), 400);
         }
 
+        $count = 1;
+        if(!empty($input['count']) && $input['count'] > 1){
+            $count = $input['count'];
+        }
+
+        if($count > 50){
+            return response()->error('MSG_MAX_LINK_50_Error', 400);
+        }
+
+        $arrUri = [];
+        for ($i=0; $i< $count; $i++){
+            $arrUri[] = new ShortLinks(['uri' => $this->genUri()]);
+        }
+
         DB::beginTransaction();
         try {
             $url = new Url;
             $url->original = $input['original_url'];
-            $url->uri = $input['uri'];
             $url->save();
+
+            $url->ShortLinks()->saveMany($arrUri);
             DB::commit();
             return response()->success([]);
         } catch (\PDOException $e) {

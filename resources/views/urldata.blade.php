@@ -28,6 +28,7 @@
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li class="analytics-data"><a class="a-analytics" href="{{url('/')}}/analytics/{{ $item->uri }}/all_time">Analytics Data</a></li>
                             <li class="edit-url"><a href="#">Edit URL</a></li>
+                            <li class="delete-url"><a href="#">Delete URL</a></li>
                         </ul>
                     </div>
                 </td>

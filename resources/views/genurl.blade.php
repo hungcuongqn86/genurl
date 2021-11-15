@@ -34,7 +34,7 @@
 
                 <div class="form-group">
                     <label for="count">Number of links</label>
-                    <input id="count" type="number" class="form-control" value="5"
+                    <input id="count" type="number" class="form-control" value="5" max="50" min="1"
                            placeholder="Your Number of links here">
                 </div>
             </div>
