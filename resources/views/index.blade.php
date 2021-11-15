@@ -21,5 +21,6 @@
         </div>
     </div>
     <!-- Modal -->
+    @include('genurl')
     @include('modal')
 @endsection

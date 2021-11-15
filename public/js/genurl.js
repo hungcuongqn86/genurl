@@ -182,6 +182,10 @@ $(document).ready(function () {
         }
     });
 
+    $('#genUrlModal').on('show.bs.modal', function (e) {
+        $('#original_url').focus();
+    });
+
     $('#myModal').on('show.bs.modal', function (e) {
         $('#uri').focus();
     });
@@ -221,7 +225,7 @@ $(document).ready(function () {
                 });
             }
         });
-        $('#myModal').modal('show');
+        $('#genUrlModal').modal('show');
     });
 
     $('#automatically').unbind('click').click(function () {
