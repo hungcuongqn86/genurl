@@ -111,6 +111,7 @@ class HomeController extends Controller
     public function shortener(Request $request)
     {
         $input = $request->all();
+
         $arrRules = [
             'original_url' => 'required | url'
         ];
@@ -138,13 +139,18 @@ class HomeController extends Controller
             $arrUri[] = new ShortLinks(['uri' => $this->genUri()]);
         }
 
+        $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        if(!empty($input['image'])){
+            $request->image->move(public_path('images'), $imageName);
+        }
+
         DB::beginTransaction();
         try {
             $url = new Url;
             $url->original = $input['original_url'];
             $url->title = $input['title'];
             $url->description = $input['description'];
-            // $url->image = $image;
+            $url->image = $imageName;
             $url->save();
 
             $url->ShortLinks()->saveMany($arrUri);

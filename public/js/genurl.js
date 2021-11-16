@@ -213,20 +213,19 @@ $(document).ready(function () {
         $('#description').val('');
         $('#image').val('');
 
-        $('#shorten').show().unbind('click').click(function () {
+        $("form#genurlFrm").submit(function(e) {
+            e.preventDefault();
             if (validate()) {
-                var original_url = decodeURIComponent($('#original_url').val());
+                var formData = new FormData(this);
                 showLoading($('#myModal-modal-content'));
                 $.ajax({
                     url: rooturl + '/shortener',
                     type: "POST",
-                    dataType: 'json',
-                    data: {
-                        original_url: original_url,
-                        count: $('#count').val(),
-                        title: $('#title').val(),
-                        description: $('#description').val(),
-                    },
+                    data: formData,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    contentType: false,
+                    cache: false,
                     success: function (data) {
                         $('#genUrlModal').modal('hide');
                         hideLoading($('#myModal-modal-content'));
@@ -244,6 +243,11 @@ $(document).ready(function () {
                 });
             }
         });
+
+        $('#shorten').show().unbind('click').click(function () {
+            $('form#genurlFrm').trigger('submit');
+        });
+
         $('#genUrlModal').modal('show');
     });
 
