@@ -13,4 +13,9 @@ class ShortLinks extends Model
     public function Logs() {
         return $this->hasMany(Logs::class,'short_link_id','id');
     }
+
+    public function Url()
+    {
+        return $this->belongsTo(Url::class, 'url_id', 'id');
+    }
 }

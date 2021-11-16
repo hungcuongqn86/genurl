@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ShortLinks;
 use App\Url;
 use App\Logs;
 use Illuminate\Support\Facades\DB;
@@ -11,8 +12,8 @@ class ProcessController extends Controller
 {
     public function index($uri)
     {
-        $url = Url::where('uri', '=', $uri)->first();
-        if ($url) {
+        $sLink = ShortLinks::with(['Url'])->where('uri', '=', $uri)->first();
+        if ($sLink) {
             $ip = \Request::ip();
             $data = \Location::get($ip);
             $countryCode = '';
@@ -45,7 +46,8 @@ class ProcessController extends Controller
             DB::beginTransaction();
             try {
                 $log = new Logs;
-                $log->url_id = $url->id;
+                $log->url_id = $sLink->url_id;
+                $log->short_link_id = $sLink->id;
                 $log->ip = $ip;
                 $log->countryCode = $countryCode;
                 $log->referer = $source;
@@ -55,7 +57,7 @@ class ProcessController extends Controller
                 $log->platform = $agent->platform();
                 $log->save();
                 DB::commit();
-                return response()->redirect($url->original);
+                return response()->redirect($sLink->Url->original);
             } catch (\PDOException $e) {
                 DB::rollBack();
                 throw $e;
