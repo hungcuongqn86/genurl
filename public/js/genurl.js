@@ -256,6 +256,7 @@ function getUrlDetail(id) {
         datatype: "html"
     }).done(function (data) {
         $("#list-conten").hide();
+        $("#analytics-conten").hide();
         $("#detail-conten").empty().html(data).show();
         history.pushState({}, null, url);
         btnBack();
@@ -328,6 +329,7 @@ function getAnalytics(url) {
         datatype: "html"
     }).done(function (data) {
         $("#list-conten").hide();
+        $("#detail-conten").hide();
         $("#analytics-conten").empty().html(data).show();
         history.pushState({}, null, url);
         btnBack();
