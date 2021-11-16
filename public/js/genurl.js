@@ -34,8 +34,8 @@ function setupMenu() {
                 contentType: false,
                 cache: false,
                 success: function (data) {
-
                     hideLoading($('#updateurlFrm'));
+                    getUrlDetail(id);
                 },
                 error: function (error) {
                     if (error.responseJSON && error.responseJSON.message) {
