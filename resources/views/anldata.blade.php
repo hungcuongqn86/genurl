@@ -11,11 +11,11 @@
             <div class="form-group">
                 <label for="timeframe">Timeframe</label>
                 <select class="form-control" id="timeframe">
-                    <option id="two_hours" {{($time==='two_hours')?'selected':''}} value="{{url('/')}}/analytics/{{ $urldata->uri }}/two_hours">two hours</option>
-                    <option id="day" {{($time==='day')?'selected':''}} value="{{url('/')}}/analytics/{{ $urldata->uri }}/day">day</option>
-                    <option id="week" {{($time==='week')?'selected':''}} value="{{url('/')}}/analytics/{{ $urldata->uri }}/week">week</option>
-                    <option id="month" {{($time==='month')?'selected':''}} value="{{url('/')}}/analytics/{{ $urldata->uri }}/month">month</option>
-                    <option id="all_time" {{($time==='all_time')?'selected':''}} value="{{url('/')}}/analytics/{{ $urldata->uri }}/all_time">all time</option>
+                    <option id="two_hours" {{($time==='two_hours')?'selected':''}} value="{{url('/')}}/analytics/{{ $urldata->id }}/two_hours">two hours</option>
+                    <option id="day" {{($time==='day')?'selected':''}} value="{{url('/')}}/analytics/{{ $urldata->id }}/day">day</option>
+                    <option id="week" {{($time==='week')?'selected':''}} value="{{url('/')}}/analytics/{{ $urldata->id }}/week">week</option>
+                    <option id="month" {{($time==='month')?'selected':''}} value="{{url('/')}}/analytics/{{ $urldata->id }}/month">month</option>
+                    <option id="all_time" {{($time==='all_time')?'selected':''}} value="{{url('/')}}/analytics/{{ $urldata->id }}/all_time">all time</option>
                 </select>
             </div>
         </div>
