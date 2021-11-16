@@ -32,6 +32,7 @@
     </div>
     <div class="form-group">
         <label for="image">Image</label>
+        <img style="max-width: 80px; max-height: 80px; margin: 5px 0;" src="{{ URL::asset('images/') }}/{{ $urldata->image }}" class="img-responsive" alt="{{ $urldata->image }}">
         <input id="image" type="file" accept="image/*">
     </div>
 
