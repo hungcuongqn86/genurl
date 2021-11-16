@@ -46,9 +46,9 @@ class HomeController extends Controller
         return view('detail', compact('urldata', 'title'));
     }
 
-    public function analytics($uri, $time, Request $request)
+    public function analytics($id, $time, Request $request)
     {
-        $query = Url::with('Logs')->where('uri', '=', $uri);
+        $query = Url::with('Logs')->where('id', '=', $id);
         if ($time !== 'all_time') {
             $date = new \DateTime();
 
@@ -71,7 +71,7 @@ class HomeController extends Controller
 
             $query = Url::with(['Logs' => function ($query) use ($date) {
                 $query->where('created_at', '>=', $date);
-            }])->where('uri', '=', $uri);
+            }])->where('id', '=', $id);
         }
 
         $urldata = $query->first();
