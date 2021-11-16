@@ -27,7 +27,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $urls = Url::with('Logs')->orderBy('created_at', 'desc')->paginate(5);
+        $urls = Url::with(['Logs', 'ShortLinks'])->orderBy('created_at', 'desc')->paginate(5);
         if ($request->ajax()) {
             return view('urldata', compact('urls'));
         }
