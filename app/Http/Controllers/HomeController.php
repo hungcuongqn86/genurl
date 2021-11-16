@@ -142,6 +142,9 @@ class HomeController extends Controller
         try {
             $url = new Url;
             $url->original = $input['original_url'];
+            $url->title = $input['title'];
+            $url->description = $input['description'];
+            // $url->image = $image;
             $url->save();
 
             $url->ShortLinks()->saveMany($arrUri);

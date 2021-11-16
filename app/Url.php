@@ -8,7 +8,7 @@ class Url extends Model
 {
     //
     protected $table = 'urls';
-    protected $fillable = ['uri', 'original'];
+    protected $fillable = ['uri', 'original', 'title', 'description', 'image'];
 
     public function ShortLinks() {
         return $this->hasMany(ShortLinks::class,'url_id','id');

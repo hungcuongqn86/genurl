@@ -26,6 +26,7 @@ function getData(page) {
         type: "get",
         datatype: "html"
     }).done(function (data) {
+        $("#detail-conten").hide();
         $("#analytics-conten").hide();
         $("#list-conten").show();
         $("#item-lists").empty().html(data);

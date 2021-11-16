@@ -22,12 +22,12 @@
     </div>
     <div class="form-group">
         <label for="title">Title</label>
-        <input id="title" type="text" class="form-control" value="{{ $urldata->original }}"
+        <input id="title" type="text" class="form-control" value="{{ $urldata->title }}"
                placeholder="Your Title of links here">
     </div>
     <div class="form-group">
         <label for="description">Description</label>
-        <input id="description" type="text" class="form-control" value="{{ $urldata->original }}"
+        <input id="description" type="text" class="form-control" value="{{ $urldata->description }}"
                placeholder="Your Description of links here">
     </div>
     <div class="form-group">
@@ -38,7 +38,7 @@
     <div class="form-group">
         <button type="button" id="shorten" class="btn btn-primary">Update</button>
     </div>
-    
+
     <table class="table table-hover">
         <thead>
         <tr>
