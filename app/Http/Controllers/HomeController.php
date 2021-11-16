@@ -167,6 +167,45 @@ class HomeController extends Controller
         }
     }
 
+    public function addLink($id, Request $request)
+    {
+        $input = $request->all();
+        $count = 0;
+        if(!empty($input['count']) && $input['count'] > 1){
+            $count = $input['count'];
+        }
+
+        if($count > 50){
+            return response()->error('MSG_MAX_LINK_50_Error', 400);
+        }
+
+        $arrUri = [];
+        for ($i=0; $i< $count; $i++){
+            $arrUri[] = new ShortLinks(['uri' => $this->genUri()]);
+        }
+
+        DB::beginTransaction();
+        try {
+            $url = Url::find($id);
+            if(empty($url)){
+                return response()->error('URl_EMPTY', 400);
+            }
+            foreach ($arrUri as $uri) {
+                $url->ShortLinks()->save($uri);
+            }
+            DB::commit();
+            return response()->success([]);
+        } catch (\PDOException $e) {
+            DB::rollBack();
+            // throw $e;
+            return response()->error('MSG_PDO_Error', 400);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // throw $e;
+            return response()->error('MSG_Error', 400);
+        }
+    }
+
     public function updateUrl($id, Request $request)
     {
         $input = $request->all();

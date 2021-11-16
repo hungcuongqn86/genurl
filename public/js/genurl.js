@@ -18,7 +18,7 @@ function setupMenu() {
         ClipboardHelper.copyText($(this).attr('short-url'));
     });
 
-    $("form#updateurlFrm").submit(function(e) {
+    $("form#updateurlFrm").submit(function (e) {
         e.preventDefault();
         if (validate()) {
             var formData = new FormData(this);
@@ -67,13 +67,39 @@ function setupMenu() {
                 getData('1');
             },
             error: function (error) {
-                $('#genUrlModal').modal('hide');
                 if (error.responseJSON && error.responseJSON.message) {
                     alert(error.responseJSON.message);
                 } else {
                     alert(error.statusText);
                 }
                 hideLoading($('#list-conten'));
+            }
+        });
+    });
+
+    $('#addLink').unbind('click').click(function () {
+        var id = $('#id').val();
+        var count = $('#count').val();
+        if (count < 1) {
+            return false;
+        }
+        showLoading($('#updateurlFrm'));
+        $.ajax({
+            url: rooturl + '/add-link/' + id,
+            type: "POST",
+            dataType: 'json',
+            data: {count: count},
+            success: function (data) {
+                hideLoading($('#updateurlFrm'));
+                getUrlDetail(id);
+            },
+            error: function (error) {
+                if (error.responseJSON && error.responseJSON.message) {
+                    alert(error.responseJSON.message);
+                } else {
+                    alert(error.statusText);
+                }
+                hideLoading($('#updateurlFrm'));
             }
         });
     });
@@ -273,7 +299,7 @@ $(document).ready(function () {
         $('#description').val('');
         $('#image').val('');
 
-        $("form#genurlFrm").submit(function(e) {
+        $("form#genurlFrm").submit(function (e) {
             e.preventDefault();
             if (validate()) {
                 var formData = new FormData(this);

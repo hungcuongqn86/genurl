@@ -76,9 +76,9 @@
         <label for="uri">More short links</label>
         <div class="input-group">
             <span class="input-group-addon">Number of links</span>
-            <input placeholder="Your short URL here" type="number" min="1" max="50" class="form-control" id="count">
+            <input placeholder="Your Number short URL here" type="number" min="1" max="50" class="form-control" id="count" name="count">
             <span class="input-group-btn">
-                                <button id="automatically" class="btn btn-default" title="Automatically create a short URL" type="button">Add</button>
+                                <button id="addLink" class="btn btn-default" title="Create short URL" type="button">Add</button>
                             </span>
         </div>
     </div>
