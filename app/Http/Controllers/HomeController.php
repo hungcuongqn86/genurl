@@ -280,6 +280,28 @@ class HomeController extends Controller
         }
     }
 
+    public function deleteLink($id)
+    {
+        DB::beginTransaction();
+        try {
+            $link = ShortLinks::find($id);
+            if(empty($link)){
+                return response()->error('LINK_EMPTY', 400);
+            }
+            $link->delete();
+            DB::commit();
+            return response()->success([]);
+        } catch (\PDOException $e) {
+            DB::rollBack();
+            // throw $e;
+            return response()->error('MSG_PDO_Error', 400);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+            return response()->error('MSG_Error', 400);
+        }
+    }
+
     public function getUri()
     {
         $uri = $this->genUri();

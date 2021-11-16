@@ -1,6 +1,99 @@
 var page = 1;
 
 function setupMenu() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('#genUrlModal').on('show.bs.modal', function (e) {
+        $('#original_url').focus();
+    });
+
+    $('#myModal').on('show.bs.modal', function (e) {
+        $('#uri').focus();
+    });
+
+    $('#create-new').unbind('click').click(function () {
+        $('.modal-title').text('Create shorten URL');
+        $(".val-alert").hide();
+
+        $('#original_url').val('');
+        $('#title').val('');
+        $('#description').val('');
+        $('#image').val('');
+
+        $("form#genurlFrm").submit(function (e) {
+            e.preventDefault();
+            if (validate()) {
+                var formData = new FormData(this);
+                showLoading($('#genurlFrm'));
+                $.ajax({
+                    url: rooturl + '/shortener',
+                    type: "POST",
+                    data: formData,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (data) {
+                        $('#genUrlModal').modal('hide');
+                        hideLoading($('#genurlFrm'));
+                        getData('1');
+                    },
+                    error: function (error) {
+                        $('#genUrlModal').modal('hide');
+                        if (error.responseJSON && error.responseJSON.message) {
+                            alert(error.responseJSON.message);
+                        } else {
+                            alert(error.statusText);
+                        }
+                        hideLoading($('#genurlFrm'));
+                    }
+                });
+            }
+        });
+
+        $('#shorten').show().unbind('click').click(function () {
+            $('form#genurlFrm').trigger('submit');
+        });
+
+        $('#genUrlModal').modal('show');
+    });
+
+    $('#automatically').unbind('click').click(function () {
+        showLoading($('#myModal-modal-content'));
+        $.ajax({
+            url: rooturl + '/auto-uri',
+            type: "GET",
+            success: function (data) {
+                if (!data.error) {
+                    $('#uri').val(data.data);
+                } else {
+                    alert(data.message);
+                }
+                hideLoading($('#myModal-modal-content'));
+            },
+            error: function (error) {
+                if (error.responseJSON && error.responseJSON.message) {
+                    alert(error.responseJSON.message);
+                } else {
+                    alert(error.statusText);
+                }
+                hideLoading($('#myModal-modal-content'));
+            }
+        });
+    });
+
+    $(document).on('click', '.pagination a', function (event) {
+        $('li').removeClass('active');
+        $(this).parent('li').addClass('active');
+        event.preventDefault();
+        page = $(this).attr('href').split('page=')[1];
+        getData(page);
+    });
+
     $('.edit-url').unbind('click').click(function () {
         getUrlDetail($(this).closest("tr").attr('id'));
     });
@@ -77,6 +170,31 @@ function setupMenu() {
         });
     });
 
+    $('.delete-link').unbind('click').click(function () {
+        var url_id = $('#id').val();
+        var id = $(this).closest("tr").attr('id');
+
+        showLoading($('#updateurlFrm'));
+        $.ajax({
+            url: rooturl + '/delete-link/' + id,
+            type: "POST",
+            dataType: 'json',
+            data: {},
+            success: function (data) {
+                hideLoading($('#updateurlFrm'));
+                getUrlDetail(url_id);
+            },
+            error: function (error) {
+                if (error.responseJSON && error.responseJSON.message) {
+                    alert(error.responseJSON.message);
+                } else {
+                    alert(error.statusText);
+                }
+                hideLoading($('#updateurlFrm'));
+            }
+        });
+    });
+
     $('#addLink').unbind('click').click(function () {
         var id = $('#id').val();
         var count = $('#count').val();
@@ -103,6 +221,9 @@ function setupMenu() {
             }
         });
     });
+
+    btnBack();
+    pagination();
 }
 
 function getData(page) {
@@ -272,100 +393,5 @@ var ClipboardHelper = {
 };
 
 $(document).ready(function () {
-    pagination();
     setupMenu();
-    btnBack();
-
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    $('#genUrlModal').on('show.bs.modal', function (e) {
-        $('#original_url').focus();
-    });
-
-    $('#myModal').on('show.bs.modal', function (e) {
-        $('#uri').focus();
-    });
-
-    $('#create-new').unbind('click').click(function () {
-        $('.modal-title').text('Create shorten URL');
-        $(".val-alert").hide();
-
-        $('#original_url').val('');
-        $('#title').val('');
-        $('#description').val('');
-        $('#image').val('');
-
-        $("form#genurlFrm").submit(function (e) {
-            e.preventDefault();
-            if (validate()) {
-                var formData = new FormData(this);
-                showLoading($('#genurlFrm'));
-                $.ajax({
-                    url: rooturl + '/shortener',
-                    type: "POST",
-                    data: formData,
-                    enctype: 'multipart/form-data',
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    success: function (data) {
-                        $('#genUrlModal').modal('hide');
-                        hideLoading($('#genurlFrm'));
-                        getData('1');
-                    },
-                    error: function (error) {
-                        $('#genUrlModal').modal('hide');
-                        if (error.responseJSON && error.responseJSON.message) {
-                            alert(error.responseJSON.message);
-                        } else {
-                            alert(error.statusText);
-                        }
-                        hideLoading($('#genurlFrm'));
-                    }
-                });
-            }
-        });
-
-        $('#shorten').show().unbind('click').click(function () {
-            $('form#genurlFrm').trigger('submit');
-        });
-
-        $('#genUrlModal').modal('show');
-    });
-
-    $('#automatically').unbind('click').click(function () {
-        showLoading($('#myModal-modal-content'));
-        $.ajax({
-            url: rooturl + '/auto-uri',
-            type: "GET",
-            success: function (data) {
-                if (!data.error) {
-                    $('#uri').val(data.data);
-                } else {
-                    alert(data.message);
-                }
-                hideLoading($('#myModal-modal-content'));
-            },
-            error: function (error) {
-                if (error.responseJSON && error.responseJSON.message) {
-                    alert(error.responseJSON.message);
-                } else {
-                    alert(error.statusText);
-                }
-                hideLoading($('#myModal-modal-content'));
-            }
-        });
-    });
-
-    $(document).on('click', '.pagination a', function (event) {
-        $('li').removeClass('active');
-        $(this).parent('li').addClass('active');
-        event.preventDefault();
-        page = $(this).attr('href').split('page=')[1];
-        getData(page);
-    });
 });
