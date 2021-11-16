@@ -1,29 +1,16 @@
-@extends('layouts.app')
-
-@section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="list-conten" class="panel panel-default">
-                    <div class="panel-heading">
-                        <button type="button" id="create-new" class="btn btn-primary">Create new</button>
-                    </div>
-                    <div class="panel-body">
-                        <div id="item-lists">
-                            @include('urldata')
-                        </div>
-                    </div>
-                </div>
-
-                <div style="display: none;" id="detail-conten" class="panel panel-default">
-                </div>
-
-                <div style="display: none;" id="analytics-conten" class="panel panel-default">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal -->
-    @include('genurl')
-    @include('modal')
-@endsection
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:url" content="{{ $sLink->Url->original }}" />
+    <meta property="og:title" content="{{ $sLink->Url->title }}" />
+    <meta property="og:image" content="{{ URL::asset('images/') }}/{{ $sLink->Url->image }}" />
+    <meta property="og:description" content="{{ $sLink->Url->description }}" />
+    <title>{{ $sLink->Url->title }}</title>
+</head>
+<body>
+    <h1></h1>
+</body>
+</html>

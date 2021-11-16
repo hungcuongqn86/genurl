@@ -41,9 +41,8 @@ class HomeController extends Controller
             return view('detaildata', compact('urldata'));
         }
 
-        $title ="Test";
         // dd($urldata);
-        return view('detail', compact('urldata', 'title'));
+        return view('detail', compact('urldata'));
     }
 
     public function analytics($id, $time, Request $request)

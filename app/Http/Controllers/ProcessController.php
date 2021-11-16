@@ -15,9 +15,11 @@ class ProcessController extends Controller
         $sLink = ShortLinks::with(['Url'])->where('uri', '=', $uri)->first();
         if ($sLink) {
             if (strpos($_SERVER["HTTP_USER_AGENT"], "facebookexternalhit/") !== false
-                || strpos($_SERVER["HTTP_USER_AGENT"], "Facebot") !== false) {
+                || strpos($_SERVER["HTTP_USER_AGENT"], "Facebot") !== false
+                // || (1==1)
+                || strpos($_SERVER["HTTP_USER_AGENT"], "https://developers.google.com/") !== false) {
                 // it is probably Facebook's bot
-                
+                return view('ogview', compact('sLink'));
             } else {
                 $ip = \Request::ip();
                 $data = \Location::get($ip);
