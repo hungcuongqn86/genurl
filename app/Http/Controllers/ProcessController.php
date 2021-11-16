@@ -14,58 +14,64 @@ class ProcessController extends Controller
     {
         $sLink = ShortLinks::with(['Url'])->where('uri', '=', $uri)->first();
         if ($sLink) {
-            $ip = \Request::ip();
-            $data = \Location::get($ip);
-            $countryCode = '';
-            if ($data) {
-                $countryCode = $data->countryCode;
-            }
-            // detec
-            $agent = new Agent();
-            $deviceType = 0;
-            if ($agent->isDesktop()) {
-                $deviceType = 1;
-            } elseif ($agent->isPhone()) {
-                $deviceType = 2;
-            } elseif ($agent->isRobot()) {
-                $deviceType = 3;
-            }
-
-            $referer = request()->headers->get('referer');
-            $source = 'direct';
-            if ($referer) {
-                $refData = parse_url($referer);
-                if (strrpos($refData['host'], 'facebook')) {
-                    $source = 'facebook';
-                } else if (strrpos($refData['host'], 'google')) {
-                    $source = 'google';
-                } else {
-                    $source = $refData['host'];
+            if (strpos($_SERVER["HTTP_USER_AGENT"], "facebookexternalhit/") !== false
+                || strpos($_SERVER["HTTP_USER_AGENT"], "Facebot") !== false) {
+                // it is probably Facebook's bot
+                
+            } else {
+                $ip = \Request::ip();
+                $data = \Location::get($ip);
+                $countryCode = '';
+                if ($data) {
+                    $countryCode = $data->countryCode;
                 }
-            }
-            DB::beginTransaction();
-            try {
-                $log = new Logs;
-                $log->url_id = $sLink->url_id;
-                $log->short_link_id = $sLink->id;
-                $log->ip = $ip;
-                $log->countryCode = $countryCode;
-                $log->referer = $source;
-                $log->device_type = $deviceType;
-                $log->device_name = $agent->device();
-                $log->browser = $agent->browser();
-                $log->platform = $agent->platform();
-                $log->save();
-                DB::commit();
-                return response()->redirect($sLink->Url->original);
-            } catch (\PDOException $e) {
-                DB::rollBack();
-                throw $e;
-                return response()->error('MSG_PDO_Error', 400);
-            } catch (\Exception $e) {
-                DB::rollBack();
-                // throw $e;
-                return response()->error('MSG_Error', 400);
+                // detec
+                $agent = new Agent();
+                $deviceType = 0;
+                if ($agent->isDesktop()) {
+                    $deviceType = 1;
+                } elseif ($agent->isPhone()) {
+                    $deviceType = 2;
+                } elseif ($agent->isRobot()) {
+                    $deviceType = 3;
+                }
+
+                $referer = request()->headers->get('referer');
+                $source = 'direct';
+                if ($referer) {
+                    $refData = parse_url($referer);
+                    if (strrpos($refData['host'], 'facebook')) {
+                        $source = 'facebook';
+                    } else if (strrpos($refData['host'], 'google')) {
+                        $source = 'google';
+                    } else {
+                        $source = $refData['host'];
+                    }
+                }
+                DB::beginTransaction();
+                try {
+                    $log = new Logs;
+                    $log->url_id = $sLink->url_id;
+                    $log->short_link_id = $sLink->id;
+                    $log->ip = $ip;
+                    $log->countryCode = $countryCode;
+                    $log->referer = $source;
+                    $log->device_type = $deviceType;
+                    $log->device_name = $agent->device();
+                    $log->browser = $agent->browser();
+                    $log->platform = $agent->platform();
+                    $log->save();
+                    DB::commit();
+                    return response()->redirect($sLink->Url->original);
+                } catch (\PDOException $e) {
+                    DB::rollBack();
+                    throw $e;
+                    return response()->error('MSG_PDO_Error', 400);
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    // throw $e;
+                    return response()->error('MSG_Error', 400);
+                }
             }
         }
     }
