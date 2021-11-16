@@ -15,6 +15,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/get-url/{id}', 'HomeController@getUrl')->name('get-url');
 Route::post('/update-url/{id}', 'HomeController@updateUrl')->name('update-url');
+Route::post('/delete-url/{id}', 'HomeController@deleteUrl')->name('delete-url');
 Route::get('/analytics/{id}/{time}', 'HomeController@analytics')->name('analytics');
 Route::get('/auto-uri', 'HomeController@getUri')->name('auto-uri');
 Route::post('/shortener', 'HomeController@shortener')->name('shortener');

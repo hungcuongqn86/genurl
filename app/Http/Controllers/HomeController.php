@@ -27,7 +27,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $urls = Url::with(['Logs', 'ShortLinks'])->orderBy('created_at', 'desc')->paginate(5);
+        $urls = Url::with(['Logs', 'ShortLinks'])->orderBy('created_at', 'desc')->paginate(100);
         if ($request->ajax()) {
             return view('urldata', compact('urls'));
         }
@@ -204,6 +204,30 @@ class HomeController extends Controller
             }
             $url->save();
 
+            DB::commit();
+            return response()->success([]);
+        } catch (\PDOException $e) {
+            DB::rollBack();
+            // throw $e;
+            return response()->error('MSG_PDO_Error', 400);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+            return response()->error('MSG_Error', 400);
+        }
+    }
+
+    public function deleteUrl($id)
+    {
+        DB::beginTransaction();
+        try {
+            $url = Url::find($id);
+            if(empty($url)){
+                return response()->error('URl_EMPTY', 400);
+            }
+            $url->ShortLinks()->delete();
+            $url->Logs()->delete();
+            $url->delete();
             DB::commit();
             return response()->success([]);
         } catch (\PDOException $e) {

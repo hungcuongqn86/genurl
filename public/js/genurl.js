@@ -52,6 +52,31 @@ function setupMenu() {
     $('#updateUrlBtn').unbind('click').click(function () {
         $('form#updateurlFrm').trigger('submit');
     });
+
+    $('.delete-url').unbind('click').click(function () {
+        var id = $(this).closest("tr").attr('id');
+
+        showLoading($('#list-conten'));
+        $.ajax({
+            url: rooturl + '/delete-url/' + id,
+            type: "POST",
+            dataType: 'json',
+            data: {},
+            success: function (data) {
+                hideLoading($('#list-conten'));
+                getData('1');
+            },
+            error: function (error) {
+                $('#genUrlModal').modal('hide');
+                if (error.responseJSON && error.responseJSON.message) {
+                    alert(error.responseJSON.message);
+                } else {
+                    alert(error.statusText);
+                }
+                hideLoading($('#list-conten'));
+            }
+        });
+    });
 }
 
 function getData(page) {
