@@ -139,8 +139,9 @@ class HomeController extends Controller
             $arrUri[] = new ShortLinks(['uri' => $this->genUri()]);
         }
 
-        $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        $imageName = "";
         if(!empty($input['image'])){
+            $imageName = time().'.'.$request->image->getClientOriginalExtension();
             $request->image->move(public_path('images'), $imageName);
         }
 
@@ -170,15 +171,13 @@ class HomeController extends Controller
     public function updateUrl($id, Request $request)
     {
         $input = $request->all();
+
         $arrRules = [
-            'uri' => 'required|unique:urls,uri,' . $id,
-            'original' => 'required | url'
+            'original_url' => 'required | url'
         ];
         $arrMessages = [
-            'uri.required' => 'ERRORS_MS.EMPTY_URI',
-            'uri.unique' => 'ERRORS_MS.UNIQUE_URI',
-            'original.required' => 'ERRORS_MS.EMPTY_ORIGINAL_URL',
-            'original.url' => 'ERRORS_MS.NOT_ORIGINAL_URL'
+            'original_url.required' => 'ERRORS_MS.EMPTY_ORIGINAL_URL',
+            'original_url.url' => 'ERRORS_MS.NOT_ORIGINAL_URL'
         ];
 
         $validator = Validator::make($input, $arrRules, $arrMessages);
@@ -186,10 +185,26 @@ class HomeController extends Controller
             return response()->error($validator->errors()->all(), 400);
         }
 
+        $imageName = "";
+        if(!empty($input['image'])){
+            $imageName = time().'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('images'), $imageName);
+        }
+
         DB::beginTransaction();
         try {
             $url = Url::find($id);
-            $url->update($input);
+            if(empty($url)){
+                return response()->error('URl_EMPTY', 400);
+            }
+            $url->original = $input['original_url'];
+            $url->title = $input['title'];
+            $url->description = $input['description'];
+            if(!empty($imageName)){
+                $url->image = $imageName;
+            }
+            $url->save();
+
             DB::commit();
             return response()->success([]);
         } catch (\PDOException $e) {

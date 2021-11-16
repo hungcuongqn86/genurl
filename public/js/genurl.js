@@ -17,6 +17,41 @@ function setupMenu() {
     $('.copy-short-url').unbind('click').click(function (event) {
         ClipboardHelper.copyText($(this).attr('short-url'));
     });
+
+    $("form#updateurlFrm").submit(function(e) {
+        e.preventDefault();
+        if (validate()) {
+            var formData = new FormData(this);
+            var id = $('#id').val();
+
+            showLoading($('#updateurlFrm'));
+            $.ajax({
+                url: rooturl + '/update-url/' + id,
+                type: "POST",
+                data: formData,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (data) {
+
+                    hideLoading($('#updateurlFrm'));
+                },
+                error: function (error) {
+                    if (error.responseJSON && error.responseJSON.message) {
+                        alert(error.responseJSON.message);
+                    } else {
+                        alert(error.statusText);
+                    }
+                    hideLoading($('#updateurlFrm'));
+                }
+            });
+        }
+    });
+
+    $('#updateUrlBtn').unbind('click').click(function () {
+        $('form#updateurlFrm').trigger('submit');
+    });
 }
 
 function getData(page) {
@@ -217,7 +252,7 @@ $(document).ready(function () {
             e.preventDefault();
             if (validate()) {
                 var formData = new FormData(this);
-                showLoading($('#myModal-modal-content'));
+                showLoading($('#genurlFrm'));
                 $.ajax({
                     url: rooturl + '/shortener',
                     type: "POST",
@@ -228,7 +263,7 @@ $(document).ready(function () {
                     cache: false,
                     success: function (data) {
                         $('#genUrlModal').modal('hide');
-                        hideLoading($('#myModal-modal-content'));
+                        hideLoading($('#genurlFrm'));
                         getData('1');
                     },
                     error: function (error) {
@@ -238,7 +273,7 @@ $(document).ready(function () {
                         } else {
                             alert(error.statusText);
                         }
-                        hideLoading($('#myModal-modal-content'));
+                        hideLoading($('#genurlFrm'));
                     }
                 });
             }

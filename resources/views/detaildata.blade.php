@@ -10,36 +10,39 @@
     </div>
 </div>
 <div class="panel-body">
-    <div class="form-group">
-        <label for="original_url">Original URL</label>
-        <input id="original_url" type="url" class="form-control" value="{{ $urldata->original }}"
-               placeholder="Your original URL here">
-        <div id="original_url_alert" class="val-alert" style="display: none;">
-                            <span class="help-block">
-                                Not original URL
-                            </span>
+    <form method="POST" id="updateurlFrm" name="updateurlFrm" enctype="multipart/form-data">
+        <input type="hidden" id="id" name="id" value="{{ $urldata->id }}">
+
+        <div class="form-group">
+            <label for="original_url">Original URL</label>
+            <input id="original_url" name="original_url" type="url" class="form-control" value="{{ $urldata->original }}"
+                   placeholder="Your original URL here">
+            <div id="original_url_alert" class="val-alert" style="display: none;">
+                                <span class="help-block">
+                                    Not original URL
+                                </span>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input id="title" type="text" class="form-control" value="{{ $urldata->title }}"
-               placeholder="Your Title of links here">
-    </div>
-    <div class="form-group">
-        <label for="description">Description</label>
-        <input id="description" type="text" class="form-control" value="{{ $urldata->description }}"
-               placeholder="Your Description of links here">
-    </div>
-    <div class="form-group">
-        <label for="image">Image</label>
-        <img style="max-width: 80px; max-height: 80px; margin: 5px 0;" src="{{ URL::asset('images/') }}/{{ $urldata->image }}" class="img-responsive" alt="{{ $urldata->image }}">
-        <input id="image" type="file" accept="image/*">
-    </div>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input id="title" name="title" type="text" class="form-control" value="{{ $urldata->title }}"
+                   placeholder="Your Title of links here">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input id="description" name="description" type="text" class="form-control" value="{{ $urldata->description }}"
+                   placeholder="Your Description of links here">
+        </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <img style="max-width: 80px; max-height: 80px; margin: 5px 0;" src="{{ URL::asset('images/') }}/{{ $urldata->image }}" class="img-responsive" alt="{{ $urldata->image }}">
+            <input id="image" name="image" type="file" accept="image/*">
+        </div>
 
-    <div class="form-group">
-        <button type="button" id="shorten" class="btn btn-primary">Update</button>
-    </div>
-
+        <div class="form-group">
+            <button type="button" id="updateUrlBtn" class="btn btn-primary">Update</button>
+        </div>
+    </form>
     <table class="table table-hover">
         <thead>
         <tr>
