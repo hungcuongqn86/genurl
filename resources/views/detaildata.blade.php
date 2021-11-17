@@ -43,7 +43,7 @@
             <button type="button" id="updateUrlBtn" class="btn btn-primary">Update</button>
         </div>
     </form>
-    <table class="table table-hover">
+    <table id="LinkList" class="table table-hover">
         <thead>
         <tr>
             <th class="col-md-1 hidden-xs col-sm-2">Id</th>
@@ -56,7 +56,8 @@
             <tr id="{{$item->id}}" short-url="{{url('/')}}/{{ $item->uri }}"
                 class="data-row">
                 <td class="col-md-1 hidden-xs col-sm-2">{{ $item->id }}</td>
-                <td class="col-md-1 hidden-xs col-sm-2"><a href="{{url('/')}}/{{ $item->uri }}">{{ $item->uri }}</a>
+                <td class="col-md-1 hidden-xs col-sm-2">
+                    <input id="uri" name="uri" type="text" style="width: 120px; display: inherit;" class="form-control sort-link-uri" value="{{ $item->uri }}" placeholder="Your URI here">
                     <div short-url="{{url('/')}}/{{ $item->uri }}" class="open-action copy-short-url" title="Copy short URL"><a class="action"><i class="glyphicon glyphicon-duplicate"></i></a></div>
                 </td>
                 <td class="col-md-1 col-sm-1 hidden-xs">

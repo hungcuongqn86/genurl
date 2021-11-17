@@ -280,6 +280,45 @@ class HomeController extends Controller
         }
     }
 
+    public function updateLink($id, Request $request)
+    {
+        $input = $request->all();
+
+        $arrRules = [
+            'uri' => 'required|unique:short_links,uri,' . $id
+        ];
+        $arrMessages = [
+            'uri.required' => 'ERRORS_MS.EMPTY_URI',
+            'uri.unique' => 'Không thể sửa do URI đã tồn tại!'
+        ];
+
+        $validator = Validator::make($input, $arrRules, $arrMessages);
+        if ($validator->fails()) {
+            return response()->error($validator->errors()->all(), 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            $uri = ShortLinks::find($id);
+            if(empty($uri)){
+                return response()->error('URI_EMPTY', 400);
+            }
+            $uri->uri = $input['uri'];
+            $uri->save();
+
+            DB::commit();
+            return response()->success([]);
+        } catch (\PDOException $e) {
+            DB::rollBack();
+            // throw $e;
+            return response()->error('MSG_PDO_Error', 400);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+            return response()->error('MSG_Error', 400);
+        }
+    }
+
     public function deleteLink($id)
     {
         DB::beginTransaction();

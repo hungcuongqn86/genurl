@@ -155,14 +155,14 @@ function setupMenu() {
         var url_id = $('#id').val();
         var id = $(this).closest("tr").attr('id');
 
-        showLoading($('#updateurlFrm'));
+        showLoading($('#LinkList'));
         $.ajax({
             url: rooturl + '/delete-link/' + id,
             type: "POST",
             dataType: 'json',
             data: {},
             success: function (data) {
-                hideLoading($('#updateurlFrm'));
+                hideLoading($('#LinkList'));
                 getUrlDetail(url_id);
             },
             error: function (error) {
@@ -171,7 +171,36 @@ function setupMenu() {
                 } else {
                     alert(error.statusText);
                 }
-                hideLoading($('#updateurlFrm'));
+                hideLoading($('#LinkList'));
+            }
+        });
+    });
+
+    $('.sort-link-uri').unbind('change').change(function () {
+        var url_id = $('#id').val();
+        var val = $(this).val();
+        if(!val){
+            return false;
+        }
+        var id = $(this).closest("tr").attr('id');
+        showLoading($('#LinkList'));
+        $.ajax({
+            url: rooturl + '/update-link/' + id,
+            type: "POST",
+            dataType: 'json',
+            data: {uri: val},
+            success: function (data) {
+                hideLoading($('#LinkList'));
+                getUrlDetail(url_id);
+            },
+            error: function (error) {
+                if (error.responseJSON && error.responseJSON.message) {
+                    alert(error.responseJSON.message);
+                } else {
+                    alert(error.statusText);
+                }
+                hideLoading($('#LinkList'));
+                getUrlDetail(url_id);
             }
         });
     });
