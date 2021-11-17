@@ -171,7 +171,7 @@ class HomeController extends Controller
     {
         $input = $request->all();
         $count = 0;
-        if(!empty($input['count']) && $input['count'] > 1){
+        if(!empty($input['count']) && $input['count'] > 0){
             $count = $input['count'];
         }
 

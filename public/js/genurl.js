@@ -15,77 +15,6 @@ function setupMenu() {
         $('#uri').focus();
     });
 
-    $('#create-new').unbind('click').click(function () {
-        $('.modal-title').text('Create shorten URL');
-        $(".val-alert").hide();
-
-        $('#original_url').val('');
-        $('#title').val('');
-        $('#description').val('');
-        $('#image').val('');
-
-        $("form#genurlFrm").submit(function (e) {
-            e.preventDefault();
-            if (validate()) {
-                var formData = new FormData(this);
-                showLoading($('#genurlFrm'));
-                $.ajax({
-                    url: rooturl + '/shortener',
-                    type: "POST",
-                    data: formData,
-                    enctype: 'multipart/form-data',
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    success: function (data) {
-                        $('#genUrlModal').modal('hide');
-                        hideLoading($('#genurlFrm'));
-                        getData('1');
-                    },
-                    error: function (error) {
-                        $('#genUrlModal').modal('hide');
-                        if (error.responseJSON && error.responseJSON.message) {
-                            alert(error.responseJSON.message);
-                        } else {
-                            alert(error.statusText);
-                        }
-                        hideLoading($('#genurlFrm'));
-                    }
-                });
-            }
-        });
-
-        $('#shorten').show().unbind('click').click(function () {
-            $('form#genurlFrm').trigger('submit');
-        });
-
-        $('#genUrlModal').modal('show');
-    });
-
-    $('#automatically').unbind('click').click(function () {
-        showLoading($('#myModal-modal-content'));
-        $.ajax({
-            url: rooturl + '/auto-uri',
-            type: "GET",
-            success: function (data) {
-                if (!data.error) {
-                    $('#uri').val(data.data);
-                } else {
-                    alert(data.message);
-                }
-                hideLoading($('#myModal-modal-content'));
-            },
-            error: function (error) {
-                if (error.responseJSON && error.responseJSON.message) {
-                    alert(error.responseJSON.message);
-                } else {
-                    alert(error.statusText);
-                }
-                hideLoading($('#myModal-modal-content'));
-            }
-        });
-    });
-
     $(document).on('click', '.pagination a', function (event) {
         $('li').removeClass('active');
         $(this).parent('li').addClass('active');
@@ -95,6 +24,11 @@ function setupMenu() {
     });
 
     $('.edit-url').unbind('click').click(function () {
+        getUrlDetail($(this).closest("tr").attr('id'));
+    });
+
+    $('a.a-shortlink').unbind('click').click(function (event) {
+        event.preventDefault();
         getUrlDetail($(this).closest("tr").attr('id'));
     });
 
@@ -111,9 +45,56 @@ function setupMenu() {
         ClipboardHelper.copyText($(this).attr('short-url'));
     });
 
-    $("form#updateurlFrm").submit(function (e) {
+    $('#create-new').unbind('click').click(function () {
+        $('#genUrlModal .modal-title').text('Create shorten URL');
+        $("#genUrlModal .val-alert").hide();
+
+        $('#genUrlModal #original_url').val('');
+        $('#genUrlModal #title').val('');
+        $('#genUrlModal #description').val('');
+        $('#genUrlModal #image').val('');
+        console.log(12121);
+        $('#genUrlModal').modal('show');
+    });
+
+    $("form#genurlFrm").unbind('submit').submit(function (e) {
         e.preventDefault();
-        if (validate()) {
+        if (g_validate()) {
+            var formData = new FormData(this);
+            showLoading($('#genurlFrm'));
+            $.ajax({
+                url: rooturl + '/shortener',
+                type: "POST",
+                data: formData,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (data) {
+                    $('#genUrlModal').modal('hide');
+                    hideLoading($('#genurlFrm'));
+                    getData('1');
+                },
+                error: function (error) {
+                    $('#genUrlModal').modal('hide');
+                    if (error.responseJSON && error.responseJSON.message) {
+                        alert(error.responseJSON.message);
+                    } else {
+                        alert(error.statusText);
+                    }
+                    hideLoading($('#genurlFrm'));
+                }
+            });
+        }
+    });
+
+    $('#shorten').show().unbind('click').click(function () {
+        $('form#genurlFrm').trigger('submit');
+    });
+
+    $("form#updateurlFrm").unbind('submit').submit(function (e) {
+        e.preventDefault();
+        if (u_validate()) {
             var formData = new FormData(this);
             var id = $('#id').val();
 
@@ -222,8 +203,8 @@ function setupMenu() {
         });
     });
 
-    btnBack();
     pagination();
+    btnBack();
 }
 
 function getData(page) {
@@ -268,59 +249,6 @@ function getUrlDetail(id) {
     });
 }
 
-function getDetail(id) {
-    showLoading($('#list-conten'));
-    $.ajax({
-        url: rooturl + '/get-url/' + id,
-        type: "get",
-        datatype: "json"
-    }).done(function (data) {
-        if (!data.error) {
-            $('.modal-title').text('Update URL');
-            $(".val-alert").hide();
-            $('#uri').val(data.data.uri);
-            $('#original_url').val(data.data.original);
-            $('#update-url').show().unbind('click').click(function () {
-                if (validate()) {
-                    var original_url = decodeURIComponent($('#original_url').val());
-                    showLoading($('#myModal-modal-content'));
-                    $.ajax({
-                        url: rooturl + '/update-url/' + id,
-                        type: "PUT",
-                        dataType: 'json',
-                        data: {
-                            uri: $('#uri').val(),
-                            original: original_url
-                        },
-                        success: function (data) {
-                            $('#myModal').modal('hide');
-                            hideLoading($('#myModal-modal-content'));
-                            getData(page);
-                        },
-                        error: function (error) {
-                            $('#myModal').modal('hide');
-                            if (error.responseJSON && error.responseJSON.message) {
-                                alert(error.responseJSON.message);
-                            } else {
-                                alert(error.statusText);
-                            }
-                            hideLoading($('#myModal-modal-content'));
-                        }
-                    });
-                }
-            });
-            $('#shorten').hide();
-            $('#myModal').modal('show');
-        } else {
-            alert(data.message);
-        }
-        hideLoading($('#list-conten'));
-    }).fail(function (jqXHR, ajaxOptions, thrownError) {
-        alert('No response from server');
-        hideLoading($('#list-conten'));
-    });
-}
-
 function getAnalytics(url) {
     showLoading($('#list-conten'));
     $.ajax({
@@ -357,13 +285,23 @@ function hideLoading(div) {
     $(div).find('.data-loading').remove();
 }
 
-function validate() {
-    if (!ValidURL($('#original_url').val())) {
-        $('#original_url_alert').show();
-        $('#original_url').focus();
+function g_validate() {
+    if (!ValidURL($('#genurlFrm #original_url').val())) {
+        $('#genurlFrm #original_url_alert').show();
+        $('#genurlFrm #original_url').focus();
         return false;
     }
-    $('#original_url_alert').hide();
+    $('#genurlFrm #original_url_alert').hide();
+    return true;
+}
+
+function u_validate() {
+    if (!ValidURL($('#updateurlFrm #original_url').val())) {
+        $('#updateurlFrm #original_url_alert').show();
+        $('#updateurlFrm #original_url').focus();
+        return false;
+    }
+    $('#updateurlFrm #original_url_alert').hide();
     return true;
 }
 

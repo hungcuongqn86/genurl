@@ -16,7 +16,7 @@
                 <td class="col-md-8 col-sm-8 col-xs-9 long-url"><a href="{{ $item->original }}">{{ $item->source }}</a>
                 </td>
                 <td class="col-md-2 hidden-xs hidden-sm">{{ $item->created }}</td>
-                <td class="col-md-1 hidden-xs col-sm-2"><a class="a-analytics"
+                <td class="col-md-1 hidden-xs col-sm-2"><a class="a-shortlink"
                                                            href="{{url('/')}}/get-url/{{ $item->id }}">{{ sizeof($item->ShortLinks) }}</a></td>
                 <td class="col-md-1 col-sm-2 col-xs-3"><a class="a-analytics"
                                                           href="{{url('/')}}/analytics/{{ $item->id }}/all_time">{{ sizeof($item->Logs) }}</a>

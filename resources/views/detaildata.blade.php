@@ -63,7 +63,6 @@
                     <div class="open-action dropdown">
                         <a class="action" data-toggle="dropdown"><i class="glyphicon glyphicon-option-vertical"></i></a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li class="analytics-data"><a class="a-analytics" href="{{url('/')}}/analytics/{{ $item->uri }}/all_time">Analytics Data</a></li>
                             <li class="delete-link"><a href="#">Delete Link</a></li>
                         </ul>
                     </div>
