@@ -28,7 +28,10 @@ class Url extends Model
             if (isset($arrItem['port'])) {
                 $res .= $arrItem['port'];
             }
-            return $res . $arrItem['path'];
+            if (isset($arrItem['path'])) {
+                $res .= $arrItem['path'];
+            }
+            return $res;
         }
         return '';
     }
